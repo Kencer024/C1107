@@ -1,0 +1,156 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* A buffer, in terms of a program in execution, can be thought of as a region of computer’s main memory that has certain
+boundaries in context with the program variable that references this memory. A buffer is said to be overflown when the data
+(meant to be written into memory buffer) gets written past the left or the right boundary of the buffer.
+This way the data gets written to a portion of memory which does not belong to the program variable that references the buffer. */
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int i;                              // Declare the index variable for "for loop"
+    int *arr
+
+    arr = malloc(5 * sizeof(int));      // Reserve the requested memory (5 * sizeof(int)) and returns a pointer to it
+    arr[i] = i;
+
+    /* Note: Output will have an error when the allocated memory is not big enough to store the integers */
+    for (i=0; i<10; i++)
+        printf("%d ", arr[i]);
+
+    return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* Write a program that asks the user how many integers will be entered, then asks for each integer.
+Purpose: Dynamic Memory allocation for arrays. */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdio.h>   // printf, scanf, NULL
+#include <stdlib.h>  // malloc, free, rand
+
+int main()
+{
+    int n;                                          // A variable to store the number of integers that the user is going to enter.
+    int i;                                          // The index variable for "for loop".
+    int *int_arr;                                   // Pointer to an integer
+
+    printf("How many integers do you have? ");      // Print a question for the user to enter the number of integers.
+    scanf("%d", &n);                                // Read the integer value that the user has entered for the number of integers.
+
+    int_arr = malloc(n * sizeof(int));              // Reserve the requested memory (multiply the size of an integer by the number of integers user is going to enter)
+                                                    // and sets the pointer  int_arr to point to the start of it.
+
+    if (int_arr == NULL) printf("Uh oh.\n");        // The returned pointer should be NULL in case of failure.
+
+    // Run "for loop" n times and store integers entered into the int_arr.
+    for (i=0; i<n; i++){
+        printf("Enter an integer: ");
+        scanf("%d", &int_arr[i]);
+    }
+
+    return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* Purpose: Dynamically allocate memory space for an integer */
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int *i;                                     // int *i is a pointer to an integer
+    i = malloc(sizeof(int));                    // Reserve the requested memory (sizeof(int)) and returns a pointer to it
+
+    if (i == NULL)                              // The returned pointer should be NULL in case of failure.
+        printf("Uh oh.\n");
+
+    printf("Enter an integer: ");
+    scanf("%d", i);                             // Read the integer which entered by the user
+    printf("The magic number is %d\n", *i);     // Print the integer
+    return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+/* Write a program that asks the user how long the string will be entered, then asks for string.
+/* Purpose: Dynamically allocate memory space for a string and get that string from user */
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdio.h>   // printf, scanf, NULL
+#include <stdlib.h>  // malloc, free, rand
+
+int main()
+{
+    int n;
+    char *str;                              // char *str is pointer to char
+
+    printf("How long is your string? ");
+    scanf("%d", &n);                        // Read the integer value that the user has entered for the number of character(s).
+
+    str = malloc(n+1);                      // Reserve the requested memory (sizeof(char) = 1) and returns a pointer to it.
+
+    if (str == NULL) printf("Uh oh.\n");    // The returned pointer should be NULL in case of failure.
+
+    printf("Enter your string: ");
+    scanf("%s", str);                       // Read the string which entered by the user
+    printf("Your string is: %s\n", str);    // Print the string
+    return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* Purpose: Deallocate allocated memory using free() function */
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdlib.h>
+
+int main(){
+    myfunc();
+}
+
+void myfunc(){
+    int *i = malloc(sizeof(int));     // Reserve the requested memory (sizeof(int)) and returns a pointer to it
+    free(i);                          // Deallocate allocated memory
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* Write a program that asks the user how many integers will be entered, then asks for each integer.
+Purpose: Define a fixed size array, ask the user the number of integers he/she wish to enter and store each integer in the defined array. */
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdio.h>                      // printf, scanf, NULL
+#define MY_FAVORITE_BIG_NUMBER 100      // Define a constant variable with value of 100
+
+
+int main()
+{
+    int numOfNumbers;                                           // A variable to store the number of integers that the user is going to enter.
+    int i;                                                      // A variable to use as the index for "for loop"
+	int numArray[MY_FAVORITE_BIG_NUMBER];                       // Declare a static array, numArray, of 100 ints
+
+    printf("How many integer(s) will be entered? ");
+    scanf("%d", &numOfNumbers);                                 // Read the integer value that the user has entered for the number of integers.
+
+/* Run "for loop" numOfNumbers times and store entered integers into the numArray. */
+    for (i=0; i<numOfNumbers; i++){
+        printf("Enter an integer: ");
+        scanf("%d", &numArray[i]);                              // &numArray[i] : Address of numArray of index i.
+        printf("Print entered numbers: %d\n", numArray[i]);     // Print the entered numbers
+    }
+
+    return 0; //The return value of the main function is considered the "Exit Status" of the application. On most operating systems returning 0 is a success status like saying "The program worked fine".
+}
+
+
