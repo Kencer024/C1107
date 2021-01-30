@@ -123,6 +123,125 @@ prev -> next = temp -> next;
 free(temp); // Free memory
 }
 
+//Lab qn 1(prof ans)
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct _listnode{       //name of the type of structure
+    int item;                   //item in struct
+    struct _listnode *next;     //inside structure theres another structure called next
+} ListNode;                     //name of main structure
+
+
+void printList(ListNode *cur);
+ListNode * findNode(ListNode *cur, int index);
+int insertNode(ListNode **ptrHead, int index, int item);
+
+int removeNode(ListNode **ptrHead,int index);
+
+int main()
+{
+    ListNode *head=NULL;
+    int size =0;
+    int item;
+    int index;
+
+    printf("Enter a list of numbers, terminated by any non-digit character: \n");
+    while(scanf("%d",&item))                        //while loop for scanning each digit in input
+        if(insertNode(&head,size, item)) size++;    //add digit into struct
+    scanf("%*s");
+
+    printList(head);
+
+    while(1){
+        printf("Enter the index of the node to be removed: ");
+        scanf("%d",&index);
+
+        if(removeNode(&head,index))
+            size--;
+        else{
+            printf("The node cannot be removed.\n");
+            break;
+        }
+
+        printf("After the removal operation,\n");
+        printList(head);
+    }
+
+    printList(head);
+    return 0;
+}
+
+void printList(ListNode *cur){
+    printf("Current List: ");
+    while (cur != NULL){
+        printf("%d ", cur->item);
+        cur = cur->next;
+    }
+    printf("\n");
+}
+
+ListNode *findNode(ListNode* cur, int index)        //stops when either index =0 or reach max of cur
+{
+   if (cur==NULL || index<0)                        //if there is nothing inside or size = 0 hence index = -1
+      return NULL;
+   while(index>0){                                  //while the size still equates to a number greater than 0
+      cur=cur->next;                                //address of current = ptrHead.next
+      if (cur==NULL)
+         return NULL;
+      index--;
+   }
+   return cur;
+}
+
+int insertNode(ListNode **ptrHead, int index, int item){
+    ListNode  *pre, *newNode;                       //creating structures
+    // If empty list or inserting first node, update head pointer
+    if (index == 0){                                //index is size
+        newNode = malloc(sizeof(ListNode));         //find size of listnode
+        newNode->item = item;                       //newNode.item = item (new structure)
+        newNode->next = *ptrHead;                   //newNode.next = content of pointer head
+        *ptrHead = newNode;                         //content of pointer head = structure newNode
+        return 1;
+    }
+    // Find the nodes before and at the target position
+    // Create a new node and reconnect the links
+    else if ((pre = findNode(*ptrHead, index-1)) != NULL){  //pre = address of size-1 AKA previous node(20)
+        newNode = malloc(sizeof(ListNode));
+        newNode->item = item;                               //newNode.item content is item(25)
+        newNode->next = pre->next;                          //20 -> 30 becomes 20&25 ->30
+        pre->next = newNode;                                //20->25; still 25 -> 30
+        return 1;
+    }
+    return 0;
+}
+
+int removeNode(ListNode **ptrHead,int index)
+{
+/* Write your program code here */
+    ListNode *pre, *cur;
+	// Sanity check for empty list
+	if (*ptrHead == NULL)
+		return 0;
+	// If removing first node, need to update head pointer
+	if (index == 0){
+		cur = *ptrHead;                             //cur = 10
+		 *ptrHead = cur->next;                      //pointerHead = 20
+		free(cur);                                  //remove cur
+		return 1;
+	}
+	// Find the nodes before and after the target position
+	// Free the target node and reconnect the links
+	if ( (pre = findNode(*ptrHead, index-1))!= NULL){   //assuming remove 25 index 2 -1 = 1
+		if (pre->next == NULL) return 0;                //if cant find item, return 0
+		cur = pre->next;                                //cur = index 1 -> next which is 25
+		pre->next=cur->next;                            //20(index 1) -> next = cur->next(which is 30)
+		free(cur);                                      //remove 25
+		return 1;
+	}
+	return 0;
+}
 
 
 
