@@ -1,0 +1,35 @@
+//write a code that checks whether a number is a perfect divisor eg. 6 = 1+2+3 or 28 = 1+2+4+7+14
+//Didnt manage to use the malloc function
+
+#include<stdbool.h>
+#include<malloc.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+char* Solve (int N) {
+   // Write your code here
+   //printf("N is %d\n",N);
+   int i, j=0, k, m=0;
+   char *yes = "YES", *no = "NO";
+   for(i=1;i<N;i++){
+       //printf("i is %d\n", i);
+       if((N%i)==0){
+           j++;
+           m += i;
+        }
+   }if(m == N)return yes;
+   else {return no;}
+}
+
+
+
+int main() {
+    int T;
+    scanf("%d", &T);
+    for(int t_i=0; t_i<T; t_i++) {
+        int N;
+        scanf("%d", &N);
+        char* out_ = Solve(N);
+        printf("%s\n", out_);
+    }
+}
