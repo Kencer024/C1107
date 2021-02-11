@@ -15,3 +15,34 @@ void reverseStack(Stack *s)
         push(s, temp);
 	}
 }
+
+
+void reverseFirstKItems(Queue *q, int k)
+{
+    /* add your code here */
+    //put K items of q to stack then the rest to q2
+    //pop K item of s to q then dequeue q2 to q
+    Queue q2;
+    Stack s;
+    q2.ll.head = NULL;
+    q2.ll.size = 0;
+    s.ll.head = NULL;
+    s.ll.size = 0;
+    int temp,i;
+    for(i=0;i<k;i++){           //push to s
+        temp = dequeue(q);
+        push(&s, temp);         //pushing K items into stack s
+    }
+    while(isEmptyQueue(q) != 1){    //q2 items contains rest of queue
+        temp = dequeue(q);
+        enqueue(&q2, temp);
+    }
+    while(isEmptyStack(&s) != 1){
+        temp = pop(&s);
+        enqueue(q,temp);
+    }
+    while(isEmptyQueue(&q2) != 1){
+        temp = dequeue(&q2);
+        enqueue(q,temp);
+    }
+}
