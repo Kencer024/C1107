@@ -46,3 +46,44 @@ void reverseFirstKItems(Queue *q, int k)
         enqueue(q,temp);
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//A lot of excessive print statement to understand prof's code better
+//Diagram of sort function in drive folder
+
+void sortStack(Stack *s)
+{
+    /* add your code here */
+    int temp;
+    Stack ts;
+    ts.ll.head = NULL;
+    ts.ll.tail = NULL;
+    ts.ll.size = 0;
+
+    while(!isEmptyStack(s)){
+        push(&ts,pop(s));
+    }
+    printList(&ts);
+    printf("\n");
+    printList(s);
+    while(!isEmptyStack(&ts)){
+        temp = pop(&ts);
+        printf("ts is ");
+        printList(&ts);
+        printf("\n");
+        while(!isEmptyStack(s) && peek(s) < temp){
+            push(&ts,pop(s));
+            printf("ts is ");
+            printList(&ts);
+            printf("\n");
+            printf("s is ");
+            printList(s);
+            printf("\n");
+        }
+        push(s,temp);
+        printf("s is ");
+        printList(s);
+        printf("\n");
+    }
+
+}
