@@ -66,3 +66,51 @@ int palindrome(char *word){
 	if(flag == 0){printf("The string is a palindrome\n");return 0;}
 	return -1;
 }
+
+////////////////////////////////////////////////////////////
+//Question 4
+	// Check one character at a time
+	// If we see an opening bracket, store it in a stack
+	// If we see a closing bracket, check stack for matching opening bracket (should be on top)
+	// The moment we see a mismatch, expression is not balanced, return
+	// If we finish looking at the expression and the stack is empty, it's balanced
+
+int balanced(char *expression){
+
+	// write your code here
+	Stack s;
+	s.ll.head = NULL;
+	s.ll.tail = NULL;
+	s.ll.size = 0;
+	printf("%s\n", expression);             //%s requires a pointer
+	printf("%c\n", *expression);            //%c is *char
+
+    // only push opening brackets and check the closing bracketsw
+    while(*expression){
+        if(*expression == '(' || *expression == '[' || *expression == '{'){
+            push(&s, *expression);
+           }
+        else if (*expression == ')'){
+            if(isEmptyStack(&s) || pop(&s) != '(')
+                return -1;
+        }
+        else if (*expression == '}'){
+            if(isEmptyStack(&s) || pop(&s) != '{')
+                return -1;
+        }
+        else if(*expression == ']' ){
+            if(isEmptyStack(&s) || pop(&s) != '[')
+                return -1;
+        }
+        expression++;
+    }
+
+    if(isEmptyStack(&s))return 0;
+    else return -1;
+
+
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
