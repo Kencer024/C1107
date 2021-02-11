@@ -1,0 +1,17 @@
+//Add stack into queue then back into the stack to reverse
+void reverseStack(Stack *s)
+{
+	/* add your code here */
+	Queue q;
+	q.ll.head = NULL;
+	q.ll.size = NULL;
+	int temp;
+	while(isEmptyStack(s) != 1){
+        temp = pop(s);
+        enqueue(&q, temp);
+	}
+	while(isEmptyQueue(&q) != 1){
+        temp = dequeue(&q);
+        push(s, temp);
+	}
+}
