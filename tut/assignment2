@@ -12,34 +12,26 @@ void createQueueFromLinkedList(LinkedList *ll, Queue *q)
 	}
 }
 
-
-// Created 2 queues, 1 for even no. and the other for odd
-// added the odd no. to original queue by enqueue and dequeue
-// reminder to put ! in while( !isEmptyQueue(q)) or else it will not work
 void removeOddValues(Queue *q)
 {
 
 	/* add your code here */
-	Queue q1, q2;
+	Queue q1;
 	q1.ll.head = NULL;
 	q1.ll.size = 0;
-	q2.ll.head = NULL;
-	q2.ll.size =0;
-	int temp, i=0;
-	while( !isEmptyQueue(q)){       //check for empty queue
+	int temp;
+	while(!isEmptyQueue(q)){       //check for empty queue
         temp = dequeue(q);        //temp holds value of dequeue
-        if(i%2 == 0){             //check for even index 0,2,4 etc
+        if(temp%2 == 0){             //check for even int
             enqueue(&q1, temp);
         }
-        else {
-            enqueue(&q2, temp);
-        }
-        i++;                      //index++
 	}
-	while( !isEmptyQueue(&q2)){
-        temp = dequeue(&q2);      //dequeue odd queue and queue it into original q
+	while(!isEmptyQueue(&q1)){
+        temp = dequeue(&q1);
         enqueue(q,temp);
 	}
+
+}
 }
 
 /////////////////////////////////////////////////////////////__end__///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,3 +74,6 @@ void removeEvenValues(Stack *s)
 
 
 }
+
+/////////////////////////////////////////////////////////////__end__///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
