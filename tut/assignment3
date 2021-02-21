@@ -29,3 +29,25 @@ int maxHeight(BTNode *node)
     else return r+1;
 
 }
+
+
+int countOneChildNodes(BTNode *node)
+
+{
+    /* add your code here */
+    
+    int l, r;
+
+    if(node == NULL)return 0 ;
+
+    l = countOneChildNodes(node->left);
+    if(((node->left)&& !(node->right))|| (!(node->left)&&(node->right))){       //XOR
+        return l +1;
+    }
+
+    r = countOneChildNodes(node->right);
+    if(((node->left)&& !(node->right))|| (!(node->left)&&(node->right))){       //XOR
+        return r +1;
+    }
+    return l+r;
+}
