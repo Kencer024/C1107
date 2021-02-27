@@ -1,0 +1,26 @@
+void levelOrderTraversal(BSTNode* root)
+{
+
+    /* add your code here */
+    // bin tree with root 0 and children 1,2 then gc 3, 4 etc to 6
+    // q 0 => d q 0; q 1, q 2; d q 1 (q.head now 2); q 3(t->left), q 4; 
+    // d q 2 (q.head now 3); q 5, q 6;
+    // d q 3 (q.head now 4); t->left == NULL hence skip enqueue; etc
+    Queue q;
+    q.head = NULL;
+    q.tail = NULL;
+    BSTNode *temp;
+    temp = root;
+
+    if(temp != NULL){
+     enqueue(&q.head,&q.tail,temp);
+     while(!isEmpty(q.head)){
+        temp = dequeue(&q.head, &q.tail);
+        printf("%d", temp->item);
+        if(temp->left != NULL)
+            enqueue(&q.head,&q.tail,temp->left);
+        if(temp->right != NULL)
+            enqueue(&q.head,&q.tail,temp->right);
+        }
+    }
+}
