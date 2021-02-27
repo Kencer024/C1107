@@ -129,10 +129,23 @@ void mirrorTree(BTNode *node){
 int hasGreatGrandchild(BTNode *node){
 
 	// write your code here
+	int l, r;
 
+	// Calculate the height of each node in the tree
+	// Print out (data stored in) node that has height > n
+	// last row is -1 and root is 2, height is 3
 
+    	if(node == NULL)return -1;
 
-
+    	l = hasGreatGrandchild(node->left);
+   	r = hasGreatGrandchild(node->right);
+    	if(r>l){
+        	l = r;
+    	}
+    	if (l > 1){
+        	printf("node is %d\n", node->item);
+    	}
+    	return(l+1);
 }
 
 void printSmallerValues(BTNode *node, int m){
