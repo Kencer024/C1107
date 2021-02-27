@@ -69,6 +69,8 @@ int maxDepth(BTNode *node)
 BTNode *searchNode(BTNode *node, int key)
 {
     /* add your code here */
+    // ONLY FOR BST not BT
+    
     if(node == NULL)
         return NULL;
     else if(node->item == key){
