@@ -30,6 +30,7 @@ void levelOrderTraversal(BSTNode* root)
 void preOrderIterative(BSTNode *root)
 {
 	 /* add your code here */
+	 // Have to push the right side 1st as the left side enters later hence 1st to exit
 	 Stack s;
 	 BSTNode *temp;
 	 s.top = NULL;
