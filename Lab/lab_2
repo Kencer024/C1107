@@ -69,48 +69,74 @@ int palindrome(char *word){
 
 ////////////////////////////////////////////////////////////
 //Question 4
-	// Check one character at a time
-	// If we see an opening bracket, store it in a stack
-	// If we see a closing bracket, check stack for matching opening bracket (should be on top)
-	// The moment we see a mismatch, expression is not balanced, return
-	// If we finish looking at the expression and the stack is empty, it's balanced
+// put string into q then recursive reverse
+// check each char for individual bracket cases and if q1 doesnt have the opposite then return -1
+// else the loop will run then exit and return 0
+// remember to put break after each case
 
 int balanced(char *expression){
 
 	// write your code here
-	Stack s;
-	s.ll.head = NULL;
-	s.ll.tail = NULL;
-	s.ll.size = 0;
-	printf("%s\n", expression);             //%s requires a pointer
-	printf("%c\n", *expression);            //%c is *char
+	char a, b;
+	Queue q,q1;
+	q1.ll.head = NULL;
+    q1.ll.size =0;
+    q.ll.head = NULL;
+    q.ll.size = 0;
 
-    // only push opening brackets and check the closing bracketsw
-    while(*expression){
-        if(*expression == '(' || *expression == '[' || *expression == '{'){
-            push(&s, *expression);
-           }
-        else if (*expression == ')'){
-            if(isEmptyStack(&s) || pop(&s) != '(')
-                return -1;
-        }
-        else if (*expression == '}'){
-            if(isEmptyStack(&s) || pop(&s) != '{')
-                return -1;
-        }
-        else if(*expression == ']' ){
-            if(isEmptyStack(&s) || pop(&s) != '[')
-                return -1;
-        }
+	while(*expression != '\0')
+    {
+        enqueue(&q, *expression);
         expression++;
     }
 
-    if(isEmptyStack(&s))return 0;
-    else return -1;
+    q1 = q;
+    recursiveReverse(&q);
+    //printList(&q);
+    //printList(&q1);
 
+    while(!isEmptyQueue(&q))
+    {
+        a = dequeue(&q);
+        //printf("%c \n", a);
+        switch(a)
+        {
+            case '[':
+                if(']' != dequeue(&q1))
+                {
+                    return -1;
+                }break;
+            case '(':
+                if(')' != dequeue(&q1))
+                {
+                    return -1;
+                }break;
+            case '{':
+                if('}' != dequeue(&q1))
+                {
+                    return -1;
+                }break;
+            case ']':
+                if('[' != dequeue(&q1))
+                {
+                    return -1;
+                }break;
+            case ')':
+                b = dequeue(&q1);
+                //printf("%c \n", b);
+                if('(' != b)
+                {
+                    return -1;
+                }break;
 
+            case '}':
+                if('{' != dequeue(&q1))
+                {
+                    return -1;
+                }break;
+        }
+
+    }return 0;
 
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
