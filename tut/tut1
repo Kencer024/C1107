@@ -23,6 +23,7 @@ void appendLL(LinkedList *ll_a , LinkedList *ll_b)
 
 
 //////my version of maxtofront////////
+// havent account for 1 or 0 item in list
 
 int moveMaxToFront(ListNode **ptrHead)
 {
