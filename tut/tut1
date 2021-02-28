@@ -54,3 +54,32 @@ int moveMaxToFront(ListNode **ptrHead)
     return 1;
 
 }
+
+
+//////my_versof_removeDUP///////
+void removeDuplicatesSortedLL(LinkedList *ll)
+{
+	/* add your code here */
+	// only if the item is not equals to the next item then temp = temp->next; else it will remove and compare again
+	// have to use j+1 for removeNode or else the fking thing removes temp and temp becomes some random addr
+	int j=0, i;
+	ListNode *temp;
+	temp = ll->head;
+
+	while(temp->next != NULL)
+    {
+        if(temp->item != temp->next->item)
+        {
+            temp = temp->next;
+            printf("%d\n", temp->item);
+            j++;
+        }
+        else
+        {
+            printf("before\n");
+            removeNode(ll, j+1);
+            printf("after\n");
+        }
+    }
+
+}
