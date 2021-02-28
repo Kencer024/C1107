@@ -20,3 +20,36 @@ void appendLL(LinkedList *ll_a , LinkedList *ll_b)
     ll_b->head = NULL;
     ll_b->size = 0;
 }
+
+
+//////my version of maxtofront////////
+
+int moveMaxToFront(ListNode **ptrHead)
+{
+    /* add your code here */
+    // get max value then use pre node to get addr of the prev node to pre->next
+    ListNode *cur,*pre;
+    int max;
+
+
+    cur = *ptrHead;
+
+    max = cur->item;
+    while(cur->next != NULL)
+    {
+
+        if((cur->next)->item > max)
+        {
+            max = cur->next->item;
+            pre = cur;
+        }
+        cur = cur->next;
+    }
+    pre->next = pre->next->next;
+    cur->next = *ptrHead;
+    *ptrHead = cur;
+
+
+    return 1;
+
+}
