@@ -57,6 +57,7 @@ int moveMaxToFront(ListNode **ptrHead)
 
 
 //////my_versof_removeDUP///////
+
 void removeDuplicatesSortedLL(LinkedList *ll)
 {
 	/* add your code here */
@@ -65,6 +66,8 @@ void removeDuplicatesSortedLL(LinkedList *ll)
 	int j=0, i;
 	ListNode *temp;
 	temp = ll->head;
+
+	if(ll->size == 1 || temp == NULL)return;
 
 	while(temp->next != NULL)
     {
