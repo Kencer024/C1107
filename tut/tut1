@@ -1,0 +1,22 @@
+////my_ver_of_append////////////////
+
+void appendLL(LinkedList *ll_a , LinkedList *ll_b)
+{
+    /*add your code here */
+    ListNode *temp;
+    int i, b_s, v;
+
+    b_s = ll_b->size;
+
+    temp = ll_b->head;
+    for(i=0;i<b_s;i++)
+    {
+        v = temp->item;
+        temp = temp->next;
+        removeNode(ll_b,0);
+        insertNode(ll_a,ll_a->size,v);
+
+    }
+    ll_b->head = NULL;
+    ll_b->size = 0;
+}
