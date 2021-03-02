@@ -47,3 +47,31 @@ int insertSortedLL(LinkedList *ll, int item)
     insertNode(ll, i, item);
     return i;
 }
+
+
+
+///////ass1_qn3///////////////
+
+void moveOddItemsToBack(LinkedList *ll)
+{
+	/* add your code here */
+	// remember 3/4 integers
+	ListNode *temp;
+	int i, d, j=0, s;      
+
+	temp = ll->head;
+
+    s = ll->size;
+	for(i=0;i<s;i++)
+    {
+        d = temp->item;
+        temp = temp->next;
+        if(d%2 !=0)
+        {
+            removeNode(ll, j);
+            insertNode(ll, ll->size, d);
+        }
+        else
+            j++;
+    }
+}
