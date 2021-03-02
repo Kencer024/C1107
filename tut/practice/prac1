@@ -1,0 +1,49 @@
+////////assignment1_qn1//////////////////////////////////////////
+
+int insertSortedLL(LinkedList *ll, int item)
+{
+	/* add your code here */
+	// if ll->head is null aka nothing in ll, or like item is the smallest no
+	// just insertnode at 0
+	// using cur->next->item compare with item
+	// 3 cases, item is max hence cur->next == NULL, item is somewhere in list, item is already in the list
+	// else just let it traverse 
+	ListNode *cur;
+
+	int i = 0;
+
+	cur = ll->head;
+
+	if(ll->head == NULL || item < cur->item)
+    {
+        insertNode(ll, 0, item);
+        return 0;
+    }
+
+
+	while(cur != NULL)
+    {
+        if(cur->next == NULL)
+        {
+            i++;
+            break;
+        }
+
+        else if(cur->next->item > item)
+            {
+                i++;
+                break;
+            }
+
+        else if(cur->next->item == item)
+            return -1;
+
+        else
+        {
+            cur = cur->next;
+            i++;
+        }
+    }
+    insertNode(ll, i, item);
+    return i;
+}
