@@ -95,6 +95,7 @@ int countOneChildNodes(BTNode *node)
 }
 
 //////////////////////////ass3_qn4////////////////////////////////////////////////////////
+// WRONG, DOESNT ACCOUNT FOR HEAD BEING ODD////////////////
 
 int sumOfOddNodes(BTNode *node)
 
@@ -120,4 +121,31 @@ int sumOfOddNodes(BTNode *node)
     }
 
     return l+r;
+}
+
+
+//////////////////////////ass3_qn4////////////////////////////////////////////////////////
+//FINALLY RIGHT ANS
+
+int sumOfOddNodes(BTNode *node)
+
+{
+    /* add your code here */
+    int l, r;
+
+    if(node == NULL)
+    {
+       return 0;
+    }
+
+    l = sumOfOddNodes(node->left);
+    r = sumOfOddNodes(node->right);
+
+
+    if(node->item %2 !=0)
+    {
+        return l + r + node->item;
+    }
+    else
+        return l+r;
 }
