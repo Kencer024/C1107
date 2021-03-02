@@ -101,3 +101,30 @@ int isStackPairwiseConsecutive(Stack *s)
     return 1;
 
 }
+
+
+
+/////////////////////////////ass2_qn4//////////////////////////////////////////////////////////////////////
+
+void reverse(Queue *q)
+{
+
+	/* add your code here */
+	Stack s;
+	s.ll.head = NULL;
+	s.ll.size = 0;
+	s.ll.tail = NULL;
+
+	while(!isEmptyQueue(q))
+    {
+        int d = dequeue(q);
+        push(&s, d);
+    }
+
+    while(!isEmptyStack(&s))
+    {
+        int d = pop(&s);
+        enqueue(q, d);
+    }
+
+}
