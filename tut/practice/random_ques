@@ -26,3 +26,117 @@ int removeNode(ListNode **ptrHead,int index)
     return 1;
 
 }
+
+
+//////////////////////////////////////////////////////////////////////
+
+void insertBSTNode(BTNode **node, int value)
+{
+	// write your code here
+	// REMEMBER THE FKING & FOR LINE 80
+	if(*node == NULL)   // no tree
+    {
+        *node = malloc(sizeof(BTNode));
+        (*node)->left = NULL;
+        (*node)->right = NULL;
+        (*node)->item = value;
+        return;
+    }
+
+    if(value < (*node)->item)
+    {
+        insertBSTNode(&(*node)->left, value);
+    }
+
+    else if(value >(*node)->item)
+    {
+        insertBSTNode(&(*node)->right, value);
+    }
+    else
+    {
+        printf("its alr inside dumbdumb \n");
+        return;
+
+    }
+
+}
+
+//////////////////////////////////////////////////////////////////////
+
+void printBSTInOrder(BTNode *node)
+{
+	// write your code here
+	if(node == NULL)
+        return;
+
+    printBSTInOrder(node->left);
+    printf("%d ", node->item);
+    printBSTInOrder(node->right);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int isBST(BTNode *node, int min, int max) // the item stored in node has to be smaller than max and larger than min
+{
+	// write your code here
+	if(node == NULL)
+        return 1;
+
+    if(node->item<min || node->item > max)
+        return 0;
+
+    if(!(isBST(node->left, min, node->item) && isBST(node->right, node->item, max)))
+        return 0;
+    else
+        return 1;
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+BTNode *removeBSTNode(BTNode *node, int value)
+{
+	// write your code here
+	// remember the last else loop
+	// remember to node->right = removeBST
+	BTNode *temp;
+
+	if(node==NULL)
+        return NULL;
+
+    if(node->item<value)
+        removeBSTNode(node->right, value);
+
+    else if(node->item>value)
+        removeBSTNode(node->left, value);
+
+    else
+    {
+        if(node->left != NULL && node->right != NULL)
+        {
+            temp = findMin(node->right);
+            node->item = temp->item;
+            node->right = removeBSTNode(node->right, temp->item);
+        }
+        else
+        {
+            temp = node;
+            if(node->left != NULL)
+                node = node->left;
+            else
+                node = node->right;
+            free(temp);
+        }
+    }
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+BTNode *findMin(BTNode *p)
+{
+	// write your code here
+	if(p != NULL)
+        findMin(p->left);
+    return p;
+}
