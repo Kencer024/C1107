@@ -1,0 +1,63 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void reverseStack(Stack *s)
+{
+	/* add your code here */
+	Queue q;
+	q.ll.head = NULL;
+	q.ll.size = 0;
+	q.ll.tail = NULL;
+
+	int temp;
+
+	while(!isEmptyStack(s))
+    {
+        temp = pop(s);
+        enqueue(&q, temp);
+    }
+
+    while(!isEmptyQueue(&q))
+    {
+        temp = dequeue(&q);
+        push(s, temp);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void reverseFirstKItems(Queue *q, int k)
+{
+    /* add your code here */
+    Stack s;
+    s.ll.head = NULL;
+    s.ll.size = 0;
+    s.ll.tail = NULL;
+
+    if(q->ll.head == NULL)
+        return NULL;
+
+    if(k> q->ll.size)
+    {
+        k = q->ll.size;
+    }
+
+
+    int i, a;
+    for(i=0;i<k;i++)
+    {
+        a = dequeue(q);
+        push(&s, a);
+    }
+    while(!isEmptyStack(&s))
+    {
+        a = pop(&s);
+        enqueue(q, a);
+    }
+    for(i=0;i<(q->ll.size - k); i++)
+    {
+        a = dequeue(q);
+        enqueue(q, a);
+    }
+}
