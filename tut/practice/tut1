@@ -18,3 +18,94 @@ void appendLL(LinkedList *ll_a , LinkedList *ll_b)
 
 }
 
+
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void moveEvenItemsToBack(LinkedList *ll)
+{
+	/* add your code here */
+	ListNode *cur;
+    cur = ll->head;
+
+	int d, i =0, j, s;
+
+    s = ll->size;
+
+	for(j=0;j<s;j++)
+    {
+        d = cur->item;
+        cur = cur->next;
+        if(d%2 == 0 )
+        {
+            //printf("A1");
+            removeNode(ll, i);
+            //printf("A2");
+            insertNode(ll, s-1, d);
+            //printf("A3");
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////
+
+int moveMaxToFront(ListNode **ptrHead)
+{
+    /* add your code here */
+    ListNode *cur, *pre;
+    pre = cur = *ptrHead;
+
+    int max = cur->item, i=0;
+
+    while(cur->next != NULL)
+    {
+        if(cur->next->item > max)
+        {
+            max = cur->next->item;
+            pre = cur;
+        }
+        cur = cur->next;
+        i++;
+    }
+
+    cur = pre->next;
+    pre->next = pre->next->next;
+    cur->next = *ptrHead;
+    *ptrHead = cur;
+
+    return 1;
+
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void removeDuplicatesSortedLL(LinkedList *ll)
+{
+	/* add your code here */
+	ListNode *cur;
+	cur = ll->head;
+	int i =0;
+
+    if(ll->head == NULL)
+        return;
+
+	while(cur->next != NULL)
+    {
+        if(cur->item == cur->next->item)
+        {
+            removeNode(ll, i+1);
+        }
+        else
+        {
+            cur = cur->next;
+            i++;
+        }
+    }
+
+}
