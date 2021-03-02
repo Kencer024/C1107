@@ -1,0 +1,20 @@
+//////////////////////////////////////////////////////////////////////////////////
+
+void appendLL(LinkedList *ll_a , LinkedList *ll_b)
+{
+    /*add your code here */
+    ListNode *cur;
+    cur = ll_b->head;
+
+    int d;
+
+    while(cur != NULL)
+    {
+        d = cur->item;
+        cur = cur->next;
+        insertNode(ll_a, ll_a->size, d);
+        removeNode(ll_b, 0);
+    }
+
+}
+
