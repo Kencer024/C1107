@@ -20,9 +20,93 @@ void levelOrderTraversal(BSTNode* root)
     {
         temp = dequeue(&(q.head), &(q.tail));
         printf("%d ", temp->item);
-        enqueue(&(q.head), &(q.tail), temp->left);
-        enqueue(&(q.head), &(q.tail), temp->right);
+        if(temp->left != NULL)
+            enqueue(&(q.head), &(q.tail), temp->left);
+        if(temp->right != NULL)
+            enqueue(&(q.head), &(q.tail), temp->right);
     }
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////
+
+void preOrderIterative(BSTNode *root)
+{
+	 /* add your code here */
+	 Stack s;
+	 s.top = NULL;
+
+	 BSTNode *temp;
+
+	 if(root != NULL)
+        push(&s, root);
+
+	 while(!isEmpty(&s))
+     {
+         temp = pop(&s);
+         printf("%d ", temp->item);
+         if(temp->right != NULL)
+            push(&s, temp->right);
+         if(temp->left != NULL)
+            push(&s, temp->left);
+     }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////
+
+int maxDepth(BTNode *node)
+{
+    /* add your code here */
+    int l, r;
+
+    if(node == NULL)
+        return -1;
+
+    l = maxDepth(node->left);
+    r = maxDepth(node->right);
+
+    if(l>r)
+        return l+1;
+    else
+        return r+1;
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////
+//BT_version
+BTNode *searchNode(BTNode *node, int key)
+{
+    /* add your code here */
+    if(node == NULL)
+        return NULL;
+
+    if(node->item == key)
+        return node;
+
+    if(!searchNode(node->left, key))
+        searchNode(node->right, key);
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////
+////BST_version
+BTNode *searchNode(BTNode *node, int key)
+{
+    /* add your code here */
+    if(node == NULL)
+        return NULL;
+
+    if(node->item >key)
+        searchNode(node->left, key);
+
+    else if(node->item < key)
+        searchNode(node->right, key);
+
+    else if(node->item == key)
+        return node;
+
+
+}
