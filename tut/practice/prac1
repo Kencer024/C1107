@@ -103,3 +103,41 @@ void moveOddItemsToBack(LinkedList *ll)
             j++;
     }
 }
+
+
+
+/////////////ass4_qn4/////////////////////////
+
+
+void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
+{
+	/* add your code here */
+	int i, s, s1;
+	ListNode *cur;
+	cur = ll->head;
+
+	if(ll->size %2 == 0)
+    {
+        s = (ll->size)/2;
+        s1 = s;
+    }
+    else
+    {
+        s = (ll->size +1)/2;
+        s1 = ll->size - s;
+    }
+
+    for(i=0;i<s;i++)
+    {
+        insertNode(resultFrontList, i, cur->item);
+        cur = cur->next;
+    }
+
+    for(i=0;i<s1;i++)
+    {
+        insertNode(resultBackList, i, cur->item);
+        cur = cur->next;
+    }
+}
+
+
