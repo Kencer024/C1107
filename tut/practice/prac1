@@ -106,7 +106,7 @@ void moveOddItemsToBack(LinkedList *ll)
 
 
 
-/////////////ass4_qn4/////////////////////////
+/////////////ass1_qn4/////////////////////////
 
 
 void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
