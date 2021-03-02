@@ -26,3 +26,44 @@ int identical(BTNode *tree1, BTNode *tree2)
 
 
 }
+
+
+//////////////////////////ass3_qn2////////////////////////////////////////////////////////
+
+int maxHeight(BTNode *node)
+
+{
+    /* add your code here */
+    int l, r;
+
+    if(node==NULL)
+        return -1;
+
+    l = maxHeight(node->left);
+    r = maxHeight(node->right);
+
+    if(r>l)
+        return r+1;
+    else
+        return l+1;
+}
+
+
+////////////////////////////ass3_qn3//////////////////////////////////////////////////////
+
+int countOneChildNodes(BTNode *node)
+
+{
+    /* add your code here */
+    int l, r;
+
+    if(node == NULL)
+        return 0;
+    if((node->left == NULL && node->right != NULL) || (node->left != NULL && node->right == NULL))
+        return 1;
+
+    l = countOneChildNodes(node->left);
+    r = countOneChildNodes(node->right);
+
+    return l+r;
+}
