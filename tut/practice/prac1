@@ -48,6 +48,34 @@ int insertSortedLL(LinkedList *ll, int item)
     return i;
 }
 
+/////////////////ass1_qn2////////////////////////////
+
+void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
+{
+	/* add your code here */
+	// insertnode into ll1 by index j += 2
+
+	int i, j=1, k, d;
+
+	ListNode *l2;
+	l2 = ll2->head;
+
+	k = ll1->size;
+
+	for(i=0;i<k;i++)
+    {
+        if(l2 != NULL)
+        {
+            d = l2->item;
+            insertNode(ll1,j,d);
+            j+= 2;
+            l2 = l2->next;
+            removeNode(ll2, 0);
+        }
+        else
+            return;
+    }
+}
 
 
 ///////ass1_qn3///////////////
