@@ -1,0 +1,28 @@
+/////////////////////ass3_qn1/////////////////////////////////////////////////////////////
+
+int identical(BTNode *tree1, BTNode *tree2)
+
+{
+   /* add your code here */
+    BTNode *node1, *node2;
+
+    node1 = tree1;
+    node2 = tree2;
+
+    if(node1 == NULL && node2 == NULL)   // means go through whole tree liao
+    return 1;
+
+    if((node1 == NULL && node2!= NULL) || (node1 != NULL && node2 == NULL))
+        return 0;
+
+    if(node1->item != node2->item)
+    {   //printf("n1 is %d, n2 is %d \n", node1->item, node2->item);
+        return 0;
+    }
+
+
+    if(!identical(node1->left, node2->left))return 0;
+    if(!identical(node1->right, node2->right))return 0;
+
+
+}
