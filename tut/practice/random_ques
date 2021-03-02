@@ -1,0 +1,28 @@
+int removeNode(ListNode **ptrHead,int index)
+{
+    /* Write your program code here */
+    ListNode *cur, *cur2;
+    cur = *ptrHead;
+    int i=0;
+
+    if(index == 0)
+    {
+        *ptrHead = cur->next;
+        free(cur);
+        return 1;
+    }
+
+    for(i=0;i<index-1;i++)
+    {
+        if(cur->next == NULL)
+            return 0;
+        cur = cur->next;
+
+    }
+
+    cur2 = cur->next;
+    cur->next = cur->next->next;
+    free(cur2);
+    return 1;
+
+}
