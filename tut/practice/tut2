@@ -61,3 +61,34 @@ void reverseFirstKItems(Queue *q, int k)
         enqueue(q, a);
     }
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+void sortStack(Stack *s)
+{
+    /* add your code here */
+    Stack s1;
+    s1.ll.head = NULL;
+    s1.ll.tail = NULL;
+    s1.ll.size = 0;
+
+    int temp;
+
+    while(!isEmptyStack(s))
+    {
+        temp = pop(s);
+        push(&s1, temp);
+    }
+
+    while(!isEmptyStack(&s1))
+    {
+        temp = pop(&s1);
+        while( !isEmptyStack(s) && temp > peek(s) )
+        {
+            push(&s1, pop(s));
+        }
+        push(s, temp);
+
+    }
+}
