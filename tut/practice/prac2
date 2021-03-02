@@ -1,0 +1,76 @@
+//////////////ass2_qn1////////////////////////
+
+void removeOddValues(Queue *q)
+{
+
+	/* add your code here */
+	Queue q1;
+	q1.ll.head = NULL;
+	q1.ll.size = 0;
+
+	int d;
+
+	if(q->ll.head == NULL)
+        return;
+
+	while(!isEmptyQueue(q))
+    {
+        d = dequeue(q);
+        if(d%2 == 0)
+            enqueue(&q1, d);
+    }
+
+    while(!isEmptyQueue(&q1))
+    {
+        enqueue(q,dequeue(&q1));
+    }
+
+}
+
+
+///////////////////////////////ass2_qn2///////////////////////////////////////////////////
+
+void createStackFromLinkedList(LinkedList *ll, Stack *s)
+{
+
+	/* add your code here */
+	ListNode *cur;
+	cur = ll->head;
+
+	if(s->ll.head != NULL)
+    {
+        (s->ll).head = NULL;
+        s->ll.size =0;
+    }
+
+    while(cur != NULL)
+    {
+        push(s, cur->item);
+        cur = cur->next;
+    }
+}
+
+void removeEvenValues(Stack *s)
+{
+
+	/* add your code here */
+	Stack s1;
+	s1.ll.head = NULL;
+	s1.ll.size = 0;
+
+	int d;
+
+	while(!isEmptyStack(s))
+    {
+        d = pop(s);
+        if(d%2 != 0)
+            push(&s1, d);
+    }
+
+    while(!isEmptyStack(&s1))
+    {
+        d = pop(&s1);
+        push(s, d);
+    }
+
+}
