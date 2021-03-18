@@ -1,0 +1,35 @@
+void in2PreLL(char* infix, LinkedList *inExpLL)
+{
+  //Write your code here
+  Stack S;
+  S.head = NULL;
+  int i;
+  while(*infix != '\0')
+  {
+      c = *infix;
+      if(c < 58 && c >47)
+        insertNode(inExpLL, c, OPERAND);
+      else if (c == ')')
+      {
+          while(peek(S) != '(')
+                    insertNode(inExpLL, c, OPT);
+          pop(S);
+      }
+      else if(c =='(')
+      {
+          push(S, c);
+      }
+      else
+      {
+          while(isEmptyStack(S) && peek(S) != '(')
+          {
+              switch(peek(S)){
+                case 
+                
+                
+                }
+          }
+      }
+      
+  }
+}
