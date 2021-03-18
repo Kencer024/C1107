@@ -33,3 +33,44 @@ void in2PreLL(char* infix, LinkedList *inExpLL)
       
   }
 }
+
+
+
+
+void expressionLL(char* infix, LinkedList *inExpLL)
+{
+    //Write your code here
+    int i1,i2,i3;
+    char *c;
+    int n;
+
+    while((*c)!='\0')
+    {
+        i1 = 0;
+        i2=0;
+        c = infix;
+        if((*c) >47 && (*c)<58)
+        {
+            n = 1;      //exponential for 10
+            while(*(c+1)>47 && *(c+1)<58)  //check for cons number
+            {
+
+                c++;
+                n++;
+            }
+            printf("%d",n);
+
+            //insertNode(inExpLL, i1, OPERAND);
+            c++;
+        }
+        else
+        {
+            //insertNode(inExpLL, *infix,OPT);
+            printf("%c",*infix);
+            infix++;
+        }
+
+
+    }
+
+}
