@@ -74,3 +74,45 @@ void expressionLL(char* infix, LinkedList *inExpLL)
     }
 
 }
+
+
+void expressionLL(char* infix, LinkedList *inExpLL)
+{
+    //Write your code here
+    int i1,i2,n;
+    char *c;
+    i1 = 0;
+    i2=0;
+    n=1;
+    c = infix;
+    
+    while((*c)!='\0')
+        c++;
+    c--;
+    
+    do
+    {
+        if((*c) >47 && (*c)<58)
+        {
+            i2 *= n;
+            i1 = (*c)-48 + i2;
+            printf("%d\n",i1);
+            c--;
+            i2 = i1;
+            if ((*c)=='\0')
+            {
+                insertNode(inExpLL, i1, OPERAND);
+            }
+        }
+        else
+        {
+            insertNode(inExpLL, i1, OPERAND);
+            insertNode(inExpLL, *c,OPT);
+            printf("%c\n", *c);
+            c--;
+            i1=i2=0;
+
+        }
+
+    }while((*c)!='\0');
+}
