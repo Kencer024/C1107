@@ -1,43 +1,4 @@
-void in2PreLL(char* infix, LinkedList *inExpLL)
-{
-  //Write your code here
-  Stack S;
-  S.head = NULL;
-  int i;
-  while(*infix != '\0')
-  {
-      c = *infix;
-      if(c < 58 && c >47)
-        insertNode(inExpLL, c, OPERAND);
-      else if (c == ')')
-      {
-          while(peek(S) != '(')
-                    insertNode(inExpLL, c, OPT);
-          pop(S);
-      }
-      else if(c =='(')
-      {
-          push(S, c);
-      }
-      else
-      {
-          while(isEmptyStack(S) && peek(S) != '(')
-          {
-              switch(peek(S)){
-                case 
-                
-                
-                }
-          }
-      }
-      
-  }
-}
-
-
-
-
-void expressionLL(char* infix, LinkedList *inExpLL)   //paranthesis error
+void expressionLL(char* infix, LinkedList *inExpLL)
 {
     //Write your code here
     int i1,i2,n;
@@ -60,76 +21,26 @@ void expressionLL(char* infix, LinkedList *inExpLL)   //paranthesis error
             i2 = ((*c)-48)*n;
             i1 += i2;
 
-            c--;
             n*= 10;
             i2 = i1;
-            printf("%d\n",i1);
+
+            //printf("%d\n",i1);
             if ((c)==infix)       // when its the first digit
             {
-                i2 = ((*c)-48)*n;
-                i1 += i2;
                 insertNode(inExpLL, i1, OPERAND);
             }
+            c--;
         }
         else
         {
-            printf("%d\n",i1);
-            insertNode(inExpLL, i1, OPERAND);
+            //printf("%d\n",i1);
+            if (n != 1)
+                insertNode(inExpLL, i1, OPERAND);
             insertNode(inExpLL, *c,OPT);
             n=1;
-            printf("%c\n", *c);
+            //printf("%c\n", *c);
             c--;
             i1=i2=0;
-            if ((c)==infix)       // when its the first digit
-            {
-                i2 = ((*c)-48)*n;
-                i1 += i2;
-                insertNode(inExpLL, i1, OPERAND);
-            }
-
         }
-
-    }while((c)!=infix);
-}
-
-
-void expressionLL(char* infix, LinkedList *inExpLL)  //incomplete
-{
-    //Write your code here
-    int i1,i2,n;
-    char *c;
-    i1 = 0;
-    i2=0;
-    n=1;
-    c = infix;
-    
-    while((*c)!='\0')
-        c++;
-    c--;
-    
-    do
-    {
-        if((*c) >47 && (*c)<58)
-        {
-            i2 *= n;
-            i1 = (*c)-48 + i2;
-            printf("%d\n",i1);
-            c--;
-            i2 = i1;
-            if ((*c)=='\0')
-            {
-                insertNode(inExpLL, i1, OPERAND);
-            }
-        }
-        else
-        {
-            insertNode(inExpLL, i1, OPERAND);
-            insertNode(inExpLL, *c,OPT);
-            printf("%c\n", *c);
-            c--;
-            i1=i2=0;
-
-        }
-
-    }while((*c)!='\0');
+    }while((c)!=infix-1);
 }
