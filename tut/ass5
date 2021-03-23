@@ -44,3 +44,67 @@ void expressionLL(char* infix, LinkedList *inExpLL)
         }
     }while((c)!=infix-1);
 }
+
+
+
+void in2PreLL(char* infix, LinkedList *inExpLL)
+{
+  //Write your code here
+    Stack s;
+    s.head = NULL;
+    s.size = 0;
+
+    int op;
+    char *c;
+
+    c = infix;
+
+    while((*c)!='\0')
+        c++;
+    c--;
+
+    while((c)!=infix-1)
+    {
+        if((*c) >47 && (*c)<58)
+            insertNode(inExpLL, (*c-48),OPERAND);
+        else if((*c) =='(')
+        {
+            while(peek(s)!=')')
+                {
+                    op = peek(s);
+                    //printf("%d\n",op);
+                    pop(&s);
+                    insertNode(inExpLL,op,OPT);
+                }
+            pop(&s);
+        }
+        else if((*c)==')')
+            push(&s,*c);
+        else
+        {
+            while(!isEmptyStack(s)&&peek(s)!=')')
+                {
+                    if((*c) == '+' || (*c) == '-')
+                    {
+                        op = peek(s);
+                        //printf("%d\n",op);
+                        pop(&s);
+                        insertNode(inExpLL,op,OPT);
+                    }
+                    else
+                        break;
+
+                }
+            push(&s,*c);
+        }
+        c--;
+    }
+    while(!isEmptyStack(s))
+    {
+        op = peek(s);
+        //printf("%d\n",op);
+        pop(&s);
+        insertNode(inExpLL,op,OPT);
+    }
+
+}
