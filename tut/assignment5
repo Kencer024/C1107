@@ -151,3 +151,147 @@ void in2PreLL(char* infix, LinkedList *inExpLL)
     }
 
 }
+
+
+
+void createExpTree(BTNode** root,char* prefix)
+{
+    //Write your code here
+    //Following insertBSTNode from tut 5
+    //using the example of +99*-88 77+/66-55 44 33
+    //issue 1 was trying to traverse recursively but ++c always returns back to OG
+    //issue 2 was changing from single digit to multiple
+    //issue 3 was the space in between characters
+    //issue 4 was that 55 44 33 are all numbers hence it goes all the way til the end
+    //issue 5 was that the code that loops while its still a digit and not a space
+    //does not take into acc that 33 is after 44 hence loops all the way
+    //issue 6 was that '+' was not taken into account for right side ++c
+
+    BTNode *temp;
+    char *c;
+    int num =0;
+
+    c = prefix;
+
+    //printf("%c\n",*c);
+
+    if ((*c) >47 && (*c)<58)        //if its a operand
+	{
+		*root = malloc(sizeof(BTNode));
+        //printf("%c\n",*c);
+        while((*c) >47 && (*c)<58)  //turn char into digits
+            {
+                if(num!=0)
+                    num*=10;
+                num+=(*c-48);
+                c++;
+            }
+		if (*root != NULL) {        //insert into node
+			(*root)->item = num;
+			(*root)->left = NULL;
+			(*root)->right = NULL;
+		}
+        //printf("prefix item is %d\n",(*root)->item);
+		return ;
+	}
+
+	else if((*c) == '\0')           //end of string
+        return;
+
+	else                            //if its a operator
+	{
+		//printf("D\n");
+		*root = malloc(sizeof(BTNode));
+		if(*c != 32)                //if its a space   +(32)99
+            {(*root)->item = *c;
+            c++;}                   //skips space
+
+
+        createExpTree(&((*root)->left), (++c));
+
+
+        temp = (*root)->left;       //if left node is opt then keep going right until the number closest to node which is a opt too
+                                    //eg the example - is left node of * so keep going until 77
+        //printf("root item is %d\n",temp->item);
+        //printf("temp item is %d\n",temp->item);
+
+        if(temp->item == '+' || temp->item == '-' || temp->item == '*' || temp->item == '/' )  //only do this if root->left is not num
+        {
+            while(temp->right->item == '+' || temp->right->item == '-' || temp->right->item == '*' || temp->right->item == '/' )     //while temp->right not a digit
+            {
+                temp = temp->right;         //ending temp should be a non digit too eg. '-' but the final - before it becomes a number
+            }
+            //printf("temp char is %c\n",temp->item);
+            //printf("c b4 while is %d\n", *c);
+            while(*c != temp->item)     //c becomes -
+                c++;
+            c+=2;                //digit after -
+            do                  //loops through the numbers until it becomes an operator eg. 88 77 until + (remember that space is included) prob arises when its 33
+            {                   //cant do max right liao
+                while(*c != 32 && *c != '\0')
+                    {
+                        if(num!=0)
+                        num*=10;
+                        num+= *c-48;
+                        c++;
+                        //printf("c in loop is %d\n", *c);        //now that 33 is attained and compared, c becomes null value
+                    }
+                //printf("num is %d\n", num);
+                if(num != temp->left->item && num != temp->right->item)
+                    {
+                        while(*c != 32)                 //backtrack to address of 33
+                            c--;
+                        break;}
+                else
+                {
+                    num =0;
+                    c++;
+                }
+
+            }while((*c) >47 && (*c)<58 || (*c)==32);
+
+            if((*c) <47 || (*c)>58)                     //if right side is operator
+                {
+                    while(*c != 32)                 //backtrack to address of 33
+                            c--;
+                }
+            //printf("c is %d\n", *c);
+
+        }
+        else
+        {
+            //printf("c is %c\n", *c);
+            if(*c == 32)
+                c++;
+            while((*c) >47 && (*c)<58)  // solves the case of +99* where later the ++c would just be the second 9
+                  {
+                      c++;                                  // loops through 55 44 33 as they are all numbers
+                      //printf("char is %c",*c);
+                      if(*c == 32)
+                        break;
+                  }
+
+            //printf("c2 is %d\n", *c);
+        }
+
+        //printf("right side c is %d\n",*c);
+		createExpTree(&((*root)->right), ++c);
+		//printf("G\n");
+		return;
+	}
+
+
+}
+
+void printTree(BTNode *node){
+	 /* add your code here */
+	 if(node == NULL)
+        return;
+
+     printTree(node->left);
+     if(node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' )
+        printf("%c ",node->item);
+     else
+        printf("%d ",node->item);
+     printTree(node->right);
+}
