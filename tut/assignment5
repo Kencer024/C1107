@@ -285,6 +285,7 @@ void createExpTree(BTNode** root,char* prefix)
 
 void printTree(BTNode *node){
 	 /* add your code here */
+	 //In order traversal
 	 if(node == NULL)
         return;
 
@@ -294,4 +295,20 @@ void printTree(BTNode *node){
      else
         printf("%d ",node->item);
      printTree(node->right);
+}
+
+
+void printTreePostfix(BTNode *node){
+   //Write your code here
+   //Post Order Traversal
+   if(node == NULL)
+        return;
+
+    printTreePostfix(node->left);
+    printTreePostfix(node->right);
+    if(node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' )
+        printf("%c ",node->item);
+    else
+        printf("%d ",node->item);
+
 }
