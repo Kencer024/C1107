@@ -154,6 +154,7 @@ void in2PreLL(char* infix, LinkedList *inExpLL)
 
 
 
+// Doesnt work if there are double spacing in between char
 void createExpTree(BTNode** root,char* prefix)
 {
     //Write your code here
