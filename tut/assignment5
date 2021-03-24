@@ -153,8 +153,7 @@ void in2PreLL(char* infix, LinkedList *inExpLL)
 }
 
 
-
-// Doesnt work if numbers are equivalent to (int) operators eg. 42 == (int)('-')
+//solved but test case fail and idk why
 void createExpTree(BTNode** root,char* prefix)
 {
     //Write your code here
@@ -173,15 +172,20 @@ void createExpTree(BTNode** root,char* prefix)
     //issue 8 was that when checking if its an operator sometimes the node->item could be the same value as the operator
     //for example, node->item = 42 but '-' is also 42 hence it would be read as an operator instead
     //now to solve the part where the end is a space, just hard code minus the space
+    //solved the int opt prob by changing the printTree to check if its the end node and also by comparing int *c value with temp->item;
+    //issue 9 was that the prefix might begin with a space hence causing an issue, just change the start to no space
 
     BTNode *temp;
     char *c;
     int num =0;
-    int char_to_dec =0;
+    char char_to_dec;
+
+    //solves initial space
+    while(*prefix == 32)
+        prefix++;
 
     c = prefix;
-
-
+    prefix = c;          //new headptr points to no space
 
 
     //checks if there are spacing at the end
@@ -218,7 +222,7 @@ void createExpTree(BTNode** root,char* prefix)
 			(*root)->left = NULL;
 			(*root)->right = NULL;
 		}
-        printf("prefix item is %d\n",(*root)->item);
+        //printf("prefix item is %d\n",(*root)->item);
 		return ;
 	}
 
@@ -250,37 +254,54 @@ void createExpTree(BTNode** root,char* prefix)
 
 
 
-
         //CHECK IF LEFT NODE IS OPT OR OPD
         temp = (*root)->left;       //if left node is opt then keep going right until the number closest to node which is a opt too
                                     //eg the example - is left node of * so keep going until 77
 
 
-        printf("root item is %d\n",(*root)->item);
-        //
+        //printf("root item is %d\n",(*root)->item);
 
 
-        char_to_dec = (int)(temp->item);
-        printf("c to d : %d\n",char_to_dec);
+        //Trying to solve the part where num == opt int
+
+        //char_to_dec = (char)(temp->item);
+
+
+
+
         //Essentially trying to get the number closest to the right node
 
         //IF ITS AN OPT
         if(temp->item == '+' || temp->item == '-' || temp->item == '*' || temp->item == '/' )  //only do this if root->left is not num
         {
-            printf("going opT route\n");
+            //printf("going opT route\n");
 
-            while(temp->right->item == '+' || temp->right->item == '-' || temp->right->item == '*' || temp->right->item == '/' )     //while temp->right not a digit
+            while(temp->right->right != NULL)    //while 2nd closest char
             {
                 temp = temp->right;         //ending temp should be a non digit too eg. '-' but the final - before it becomes a number
-                printf("temp item is %d\n",temp->item);
+                //printf("temp is %d\n",temp->item);
             }
             //printf("temp char is %c\n",temp->item);
             //printf("c b4 while is %d\n", *c);
 
 
+            num = 0;
+            while(num != temp->right->item)     //c becomes -
+                {
+                    if(*c == 32 || *c < 47 || *c >58 )
+                    {
+                        num =0;
+                        c++;
+                    }
 
-            while(*c != temp->item)     //c becomes -
-                c++;
+                    else
+                    {
+                        if(num!=0)
+                            num*=10;
+                        num+=(*c-48);
+                        c++;
+                    }
+                }
 
             c++;                        //now *c = - so c++ to become space
             while(*c == 32)                //digit after -
@@ -288,10 +309,10 @@ void createExpTree(BTNode** root,char* prefix)
 
 
 
-            printf("c after while is %d\n", *c);
+            //printf("c after while is %d\n", *c);
 
 
-
+            num = 0;
             while((*c) >47 && (*c)<58 || (*c)==32)                  //loops through the numbers until it becomes an operator eg. 88 77 until + (remember that space is included) prob arises when its 33
             {                                                       //changes *c into opd then compares with left and right node
                 while(*c != 32 && *c != '\0')
@@ -304,14 +325,16 @@ void createExpTree(BTNode** root,char* prefix)
                     }
 
 
-                printf("num is %d\n", num);
+                //printf("num is %d\n", num);
 
 
                 if(num != temp->left->item && num != temp->right->item)
                     {
+                        //printf("Not equal and broken\n");
                         while(*c != 32)                 //backtrack to address of 33
                             c--;
-                        break;}
+                        break;
+                    }
                 else
                 {
                     num =0;
@@ -320,7 +343,7 @@ void createExpTree(BTNode** root,char* prefix)
                 }
 
             }
-
+           //printf("Out of loop success\n");
             if((*c) <47 || (*c)>58)                     //if right side is operator
                 {
                     while(*c != 32)                 //backtrack to address of 33
@@ -336,7 +359,7 @@ void createExpTree(BTNode** root,char* prefix)
         //IF ITS AN OPD
         else
         {
-            printf("going opD route\n");
+            //printf("going opD route\n");
             if(*c == 32)
                 c++;
             while((*c) >47 && (*c)<58)  // solves the case of +99* where later the ++c would just be the second 9
@@ -357,7 +380,7 @@ void createExpTree(BTNode** root,char* prefix)
             c++;
 
 
-        printf("right side c is %d\n",*c);
+        //printf("right side c is %d\n",*c);
 
 
         if(*(c) != '\0')
@@ -376,7 +399,7 @@ void printTree(BTNode *node){
         return;
 
      printTree(node->left);
-     if(node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' )
+     if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
         printf("%c ",node->item);
      else
         printf("%d ",node->item);
@@ -392,7 +415,7 @@ void printTreePostfix(BTNode *node){
 
     printTreePostfix(node->left);
     printTreePostfix(node->right);
-    if(node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' )
+    if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
         printf("%c ",node->item);
     else
         printf("%d ",node->item);
@@ -404,7 +427,7 @@ double computeTree(BTNode *node){
     //Using the concept of max depth in assignment 4 to traverse the tree
     //if node->item is number then return the number else follow the switch case
 
-    int l, r, ans;
+    double l, r, ans;
 
     if(node == NULL)return node->item;
     //printf("A\n");
@@ -413,7 +436,7 @@ double computeTree(BTNode *node){
     if(node->right != NULL)
         r = computeTree(node->right);
     //printf("%c\n",node->item);
-    if(node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' )
+    if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
     {
         switch(node->item)
     {
@@ -428,6 +451,7 @@ double computeTree(BTNode *node){
     }
     else
         return node->item;
+
 
 
 }
