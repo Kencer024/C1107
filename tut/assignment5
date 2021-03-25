@@ -178,7 +178,7 @@ void createExpTree(BTNode** root,char* prefix)
     //issue 11 is if its 77+ / instead of 77+/ then it wouldnt work
 
     BTNode *temp;
-    char *c;
+    char *c,*d;
     int num =0;
     int flag=0;
 
@@ -226,7 +226,7 @@ void createExpTree(BTNode** root,char* prefix)
 			(*root)->left = NULL;
 			(*root)->right = NULL;
 		}
-        printf("prefix item is %d\n",(*root)->item);
+        //printf("prefix item is %d\n",(*root)->item);
 		return ;
 	}
 
@@ -263,7 +263,7 @@ void createExpTree(BTNode** root,char* prefix)
                                     //eg the example - is left node of * so keep going until 77
 
 
-        printf("root item is %d\n",(*root)->item);
+        //printf("root item is %d\n",(*root)->item);
 
 
 
@@ -273,14 +273,15 @@ void createExpTree(BTNode** root,char* prefix)
         //IF ITS AN OPT
         if(temp->item == '+' || temp->item == '-' || temp->item == '*' || temp->item == '/' )  //only do this if root->left is not num
         {
-            printf("going opT route\n");
+            //printf("going opT route\n");
 
             while(temp->right->right != NULL)    //while 2nd closest char
             {
                 temp = temp->right;         //ending temp should be a non digit too eg. '-' but the final - before it becomes a number
-                printf("temp is %d\n",temp->item);
+                //printf("temp is %d\n",temp->item);
             }
-            //printf("temp char is %c\n",temp->item);
+
+            //printf("temp char is %d\n",temp->right->item);
             //printf("c b4 while is %d\n", *c);
 
 
@@ -301,19 +302,60 @@ void createExpTree(BTNode** root,char* prefix)
                         c++;
                     }
                 }
-
-            c++;                    //now *c = - so c++ to become space
-            if(*c !=32)             //if the next portion isnt a space then let *c be the operator
+            /*
+            d = c;
+            printf("C before while1 is ");
+            while(*d != '\0')
             {
-                c--;
-                flag = 1;
+                printf("%d ", *d);
+                d++;
             }
+            printf("\n");*/
+
+
+
+
+
+            if(*c == 32)
+            {
+                c++;                    //now *c = - so c++ to become space
+            }
+            /*
+            d = c;
+            printf("C before while2 is ");
+            while(*d != '\0')
+            {
+                printf("%d ", *d);
+                d++;
+            }
+            printf("\n");*/
+
+
+            if(*c < 47 || *c>58)
+                flag =1;
+
+            if(*c !=32 && flag == 0)             //if the next portion isnt a space then let *c be the operator
+            {
+                do
+                {
+                    c--;
+                    flag = 1;
+                }while(*c == 32);
+            }
+
             while(*c == 32)                //digit after -
                 c++;
 
 
-
-            printf("c after while is %d\n", *c);
+            /*
+            d = c;
+            printf("C after while is ");
+            while(*d != '\0')
+            {
+                printf("%d ", *d);
+                d++;
+            }
+            printf("\n");*/
 
 
             num = 0;
@@ -329,12 +371,12 @@ void createExpTree(BTNode** root,char* prefix)
                     }
 
 
-                printf("num is %d\n", num);
+                //printf("num is %d\n", num);
 
                 //This part assumes that a space means break
                 if(num != temp->left->item && num != temp->right->item)
                     {
-                        printf("Not equal and broken\n");
+                        //printf("Not equal and broken\n");
                         while(*c != 32 )                 //backtrack to address of 33
                             c--;
                         break;
@@ -347,13 +389,13 @@ void createExpTree(BTNode** root,char* prefix)
                 }
 
             }
-            printf("Out of loop success\n");
+            //printf("Out of loop success\n");
             if(((*c) <47 || (*c)>58) && flag == 0)                     //if right side is operator
                 {
                     while(*c != 32)                 //backtrack to address of 33
                             c--;
                 }
-            printf("c is %d\n", *c);
+            //printf("c is %d\n", *c);
 
         }
 
@@ -363,7 +405,7 @@ void createExpTree(BTNode** root,char* prefix)
         //IF ITS AN OPD
         else
         {
-            printf("going opD route\n");
+            //printf("going opD route\n");
             if(*c == 32)
                 c++;
             while((*c) >47 && (*c)<58)  // solves the case of +99* where later the ++c would just be the second 9
@@ -384,7 +426,7 @@ void createExpTree(BTNode** root,char* prefix)
             c++;
 
 
-        printf("right side c is %d\n",*c);
+        //printf("right side c is %d\n",*c);
 
 
         if(*(c) != '\0')
@@ -392,6 +434,69 @@ void createExpTree(BTNode** root,char* prefix)
 		//printf("G\n");
 		return;
 	}
+
+
+}
+
+void printTree(BTNode *node){
+	 /* add your code here */
+	 //In order traversal
+	 if(node == NULL)
+        return;
+
+     printTree(node->left);
+     if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
+        printf("%c ",node->item);
+     else
+        printf("%d ",node->item);
+     printTree(node->right);
+}
+
+
+void printTreePostfix(BTNode *node){
+   //Write your code here
+   //Post Order Traversal
+   if(node == NULL)
+        return;
+
+    printTreePostfix(node->left);
+    printTreePostfix(node->right);
+    if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
+        printf("%c ",node->item);
+    else
+        printf("%d ",node->item);
+
+}
+
+double computeTree(BTNode *node){
+    //Write your code here
+    //Using the concept of max depth in assignment 4 to traverse the tree
+    //if node->item is number then return the number else follow the switch case
+
+    double l, r, ans;
+
+    if(node == NULL)return node->item;
+    //printf("A\n");
+    if(node->left != NULL)
+        l = computeTree(node->left);
+    if(node->right != NULL)
+        r = computeTree(node->right);
+    //printf("%c\n",node->item);
+    if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
+    {
+        switch(node->item)
+    {
+        case '+' : return l+r;
+
+        case '-' : return l-r;
+
+        case '*' : return l*r;
+
+        case '/' : return l/r;
+    }
+    }
+    else
+        return node->item;
 
 
 }
