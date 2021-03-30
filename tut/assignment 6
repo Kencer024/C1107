@@ -62,3 +62,44 @@ int HashDelete(HashTable* Q1Ptr, int key)
     return 1; //insertion is done successfully
 
 }
+
+
+//open addr
+int HashInsert(int key, HashSlot hashTable[])
+{
+   //Write your code here
+    int index, keymod,i=0, n=0;
+    HashSlot newNode;
+    index = hash1(key);
+
+
+    //If its empty then can just insert else mod the key then add to key then hash
+    if(hashTable[index].indicator == EMPTY)
+    {
+        hashTable[index].indicator = USED;
+        hashTable[index].key = key;
+    }
+    else if(hashTable[index].indicator != EMPTY)
+    {
+        if(hashTable[index].indicator == DELETED)
+        {
+            index++;
+        }
+        keymod = hash2(key);
+        while(hashTable[index].indicator != EMPTY)
+        {
+            i++;
+            n++;
+            index = hash1(key+i*keymod);
+            if(hashTable[index].indicator == DELETED)
+                index++;
+        }
+        hashTable[index].indicator = USED;
+        hashTable[index].key = key;
+    }
+
+
+
+    return n; //insertion is done successfully
+
+}
