@@ -1,0 +1,64 @@
+
+//doubly linked list with 1 test case error
+int HashInsert(HashTable* Q1Ptr, int key)
+{
+    //Write your code here
+    int index;
+    ListNode *newNode, *temp;
+
+    if(HashSearch(*Q1Ptr, key)!=NULL)   //duplicate
+        return 0;
+
+    if(Q1Ptr->hSize!=0)
+        index  = Hash(key,Q1Ptr->hSize);
+
+    //The key is inserted from the front.
+    newNode = (ListNode *) malloc(sizeof(ListNode));
+    newNode->key = key;
+    newNode->next= Q1Ptr->Table[index].head;
+    //temp = newNode->next;
+    Q1Ptr->Table[index].head = newNode;
+    if(Q1Ptr->Table[index].size!= 0)
+        Q1Ptr->Table[index].head->next->pre = Q1Ptr->Table[index].head;
+
+    Q1Ptr->Table[index].size++;
+    Q1Ptr->nSize++;
+
+    return 1; //insertion is done successfully
+
+}
+
+int HashDelete(HashTable* Q1Ptr, int key)
+{
+
+
+    //Write your code here
+    int index;
+    ListNode *temp;
+
+    if(HashSearch(*Q1Ptr, key)==NULL)   //duplicate
+        return 0;
+
+    if(Q1Ptr->hSize!=0)
+        index  = Hash(key,Q1Ptr->hSize);
+
+    //The key is inserted from the front.
+    temp = HashSearch(*Q1Ptr, key);
+    //printf("temp is %d\n",temp->pre->key);
+    if(temp->pre != NULL && temp->next != NULL)
+        temp->pre->next = temp->next;
+    else if(temp->pre == NULL)
+    {
+        Q1Ptr->Table[index].head = temp->next;
+    }
+    else if(temp->next == NULL)
+    {
+        temp->pre->next = NULL;
+    }
+    Q1Ptr->Table[index].size--;
+    Q1Ptr->nSize--;
+    free(temp);
+
+    return 1; //insertion is done successfully
+
+}
