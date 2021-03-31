@@ -103,3 +103,84 @@ int HashInsert(int key, HashSlot hashTable[])
     return n; //insertion is done successfully
 
 }
+
+//all test case failed
+//open addr with double hashing
+int HashInsert(int key, HashSlot hashTable[])
+{
+   //Write your code here
+    int index, keymod,i=0, n=0;
+
+    index = hash1(key);
+
+
+    //If its empty then can just insert else mod the key then add to key then hash
+    if(hashTable[index].indicator == EMPTY)
+    {
+        hashTable[index].indicator = USED;
+        hashTable[index].key = key;
+    }
+    else if(hashTable[index].indicator != EMPTY)
+    {
+        if(hashTable[index].indicator == DELETED)
+        {
+            index++;
+        }
+        keymod = hash2(key);
+        while(hashTable[index].indicator != EMPTY)
+        {
+            if(n>=TABLESIZE)
+                return n;
+            i++;
+            n++;
+            index = hash1(key+i*keymod);
+            if(hashTable[index].indicator == DELETED)
+                index++;
+            else if(hashTable[index].key == key)
+                return -1;
+
+        }
+        hashTable[index].indicator = USED;
+        hashTable[index].key = key;
+    }
+
+
+
+    return n; //insertion is done successfully
+
+}
+
+int HashDelete(int key, HashSlot hashTable[])
+{
+    //Write your code here
+
+    int index, keymod,i=0, n=0;
+
+
+
+    index = hash1(key);
+    keymod = hash2(key);
+
+    while(hashTable[index].indicator == USED)
+        {
+            if(n>=TABLESIZE)
+                return n;
+
+            i++;
+            n++;
+
+
+            if(hashTable[index].indicator == DELETED)
+                index++;
+            if(hashTable[index].key == key)
+            {
+                hashTable[index].indicator = DELETED;
+                return n;
+            }
+
+            index = hash1(key+i*keymod);
+
+        }
+
+    return -1;
+}
