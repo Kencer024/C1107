@@ -205,6 +205,97 @@ int HashDelete(int key, HashSlot hashTable[])
     return -1;
 }
 
+//chiam inspired ans for open addr
+int HashInsert(int key, HashSlot hashTable[])
+{
+   //Write your code here
+    int index, keymod,i=0, n=0,del_;
+
+    index = hash1(key);
+
+
+    //checking for duplicate keys
+    while(i<TABLESIZE)
+        {
+            if(hashTable[index].key == key && hashTable[index].indicator == USED)
+                return -1;
+
+            else if(hashTable[index].indicator == EMPTY)
+            {
+                hashTable[index].indicator = USED;
+                hashTable[index].key = key;
+                return i;
+            }
+
+
+
+            else if(hashTable[index].indicator == DELETED)//still need other slots for duplicates
+            {
+                n=1;
+                keymod = hash2(key);
+                del_ = hash1(key + n*keymod); //use del_ to traverse to check for dupes
+                while(del_ != index)
+                {
+                    if(hashTable[del_].key == key)
+                        return -1;
+                    n++;
+                    del_ = hash1(key+n*keymod);
+                }
+                hashTable[index].indicator = USED;
+                hashTable[index].key = key;
+                return i;
+            }
+
+            keymod = hash2(key);
+            n++;
+            index = hash1(key+n*keymod);
+
+
+            i++;
+        }
+        return i;
+
+
+
+}
+
+int HashDelete(int key, HashSlot hashTable[])
+{
+    //Write your code here
+
+    int index, keymod,i=0, n=0;
+
+
+
+    index = hash1(key);
+    keymod = hash2(key);
+
+    while(hashTable[index].indicator == USED)
+        {
+            if(n>=TABLESIZE)
+                return n;
+
+            i++;
+            n++;
+
+
+            if(hashTable[index].indicator == DELETED)
+                index++;
+
+
+            if(hashTable[index].key == key)
+            {
+                hashTable[index].indicator = DELETED;
+                return n;
+            }
+
+            index = hash1(key+i*keymod);
+
+        }
+
+    return -1;
+}
+
 
 //coascled hash
 int HashInsert(int key, HashSlot hashTable[])
