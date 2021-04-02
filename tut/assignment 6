@@ -46,7 +46,10 @@ int HashDelete(HashTable* Q1Ptr, int key)
     temp = HashSearch(*Q1Ptr, key);
     //printf("temp is %d\n",temp->pre->key);
     if(temp->pre != NULL && temp->next != NULL)
+    {   
         temp->pre->next = temp->next;
+        temp->next->pre = temp->pre;
+    }
     else if(temp->pre == NULL)
     {
         Q1Ptr->Table[index].head = temp->next;
