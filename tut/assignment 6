@@ -204,3 +204,86 @@ int HashDelete(int key, HashSlot hashTable[])
 
     return -1;
 }
+
+
+//coascled hash
+int HashInsert(int key, HashSlot hashTable[])
+{
+    // Write your code here
+    //4 cases, key mod prime is empty, key mod prime is filled, duplicate keys, table full lol
+    //if it loops back to OG means full
+    //if key is empty then normal close addressing; if its filled then OG key->next = new key index
+    //if duplicate key then return -1
+    int index,i,pre, OG;
+
+    //first check for duplicate keys
+    if(HashFind(key, hashTable) == -1)
+        return -1;
+
+    index = hash(key);
+
+    OG =index;
+
+    //now to check whether the number is first mod
+    if(hashTable[index].indicator == EMPTY)
+    {
+        hashTable[index].key = key;
+        hashTable[index].indicator = USED;
+        return index;
+    }
+    //now got 2 case, table full or not full lor
+    //if mod got thing alr then juz ++;
+    //pre = index of prev # then pre->next = index;
+    else
+    {
+        pre = index;
+        while(hashTable[index].indicator!=EMPTY)
+        {
+            if(hashTable[index].key == key)     //duplicate key case
+                return -1;
+                                 //for later if found empty slot then hashTable[pre].next = index
+
+            if(hashTable[index].next != -1)
+                {
+                    pre=index;
+                    index=hashTable[index].next;
+                }
+            else
+                index++;
+
+            if(index>TABLESIZE)             //if it goes all the way down and still no slot, it has to loop back up
+                index =0;
+            if(index == OG)                 //1 loop done
+                return 1;
+        }
+        hashTable[pre].next = index;
+        hashTable[index].key=key;
+        hashTable[index].indicator=USED;
+        return index;
+    }
+
+}
+
+
+int HashFind(int key, HashSlot hashTable[])
+{
+    // Write your code here
+    int index;
+
+    index = hash(key);
+
+    //if its the first key
+    if(hashTable[index].key == key)
+            return -1;
+
+    while(hashTable[index].next != -1){
+        if(hashTable[index].key == key)
+            return -1;
+        else
+        {
+            index = hashTable[index].next;
+        }
+    }
+
+    return 0;
+}
