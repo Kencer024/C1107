@@ -64,6 +64,48 @@ int HashDelete(HashTable* Q1Ptr, int key)
 }
 
 
+//zavier ans
+int HashInsert(HashTable* Q1Ptr, int key)
+{
+    //Write your code here
+    int index;
+    ListNode *newNode, *temp;
+
+    if(HashSearch(*Q1Ptr, key)!=NULL)   //duplicate
+        return 0;
+
+    if(Q1Ptr->hSize!=0)
+        index  = Hash(key,Q1Ptr->hSize);
+
+    //The key is inserted from the front.
+    newNode = (ListNode *) malloc(sizeof(ListNode));
+    newNode->key = key;
+    newNode->next= NULL;
+    newNode->pre = NULL;
+
+    temp = Q1Ptr->Table[index].head;
+
+    if(temp == NULL)
+    {
+        Q1Ptr->Table[index].head = newNode;
+        Q1Ptr->Table[index].head->next = NULL;
+    }
+    //temp = newNode->next;
+    else
+    {
+        newNode->next = Q1Ptr->Table[index].head;
+        Q1Ptr->Table[index].head->pre = newNode;
+        Q1Ptr->Table[index].head = newNode;
+    }
+
+
+    (Q1Ptr->Table[index].size)++;
+    //Q1Ptr->nSize++;
+
+    return 1; //insertion is done successfully
+
+}
+
 //open addr
 int HashInsert(int key, HashSlot hashTable[])
 {
