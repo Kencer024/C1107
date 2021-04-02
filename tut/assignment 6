@@ -68,65 +68,38 @@ int HashDelete(HashTable* Q1Ptr, int key)
 int HashInsert(int key, HashSlot hashTable[])
 {
    //Write your code here
+
     int index, keymod,i=0, n=0;
-    HashSlot newNode;
+
     index = hash1(key);
 
 
-    //If its empty then can just insert else mod the key then add to key then hash
-    if(hashTable[index].indicator == EMPTY)
-    {
-        hashTable[index].indicator = USED;
-        hashTable[index].key = key;
-    }
-    else if(hashTable[index].indicator != EMPTY)
-    {
-        if(hashTable[index].indicator == DELETED)
-        {
-            index++;
-        }
-        keymod = hash2(key);
-        while(hashTable[index].indicator != EMPTY)
+    //checking for duplicate keys
+    //if table is full and insert duplicate keys
+    
+    while(i<TABLESIZE)
         {
             i++;
-            n++;
-            index = hash1(key+i*keymod);
-            if(hashTable[index].indicator == DELETED)
-                index++;
+            if(hashTable[i].key == key)
+                return -1;
         }
-        hashTable[index].indicator = USED;
-        hashTable[index].key = key;
-    }
 
-
-
-    return n; //insertion is done successfully
-
-}
-
-//all test case failed
-//open addr with double hashing
-int HashInsert(int key, HashSlot hashTable[])
-{
-   //Write your code here
-    int index, keymod,i=0, n=0;
-
-    index = hash1(key);
-
+    i=0; //i=0 for traversal later
 
     //If its empty then can just insert else mod the key then add to key then hash
-    if(hashTable[index].indicator == EMPTY)
+    if(hashTable[index].indicator == DELETED || hashTable[index].indicator == EMPTY)
     {
         hashTable[index].indicator = USED;
         hashTable[index].key = key;
+
     }
     else if(hashTable[index].indicator != EMPTY)
     {
-        if(hashTable[index].indicator == DELETED)
-        {
-            index++;
-        }
+        //check for duplicate keys
+        //if slot is deleted, but need check for duplicates 1st then can just insert in
+
         keymod = hash2(key);
+
         while(hashTable[index].indicator != EMPTY)
         {
             if(n>=TABLESIZE)
@@ -134,12 +107,14 @@ int HashInsert(int key, HashSlot hashTable[])
             i++;
             n++;
             index = hash1(key+i*keymod);
-            if(hashTable[index].indicator == DELETED)
-                index++;
-            else if(hashTable[index].key == key)
-                return -1;
+            if(hashTable[index].indicator == DELETED || hashTable[index].indicator == EMPTY)
+                break;
+
 
         }
+
+
+
         hashTable[index].indicator = USED;
         hashTable[index].key = key;
     }
