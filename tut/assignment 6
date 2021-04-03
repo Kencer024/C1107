@@ -403,7 +403,7 @@ int HashDelete(int key, HashSlot hashTable[])
 
 
 
-//coascled hash
+//coascled hash(2 test case wrong)
 int HashInsert(int key, HashSlot hashTable[])
 {
     // Write your code here
@@ -461,7 +461,7 @@ int HashInsert(int key, HashSlot hashTable[])
 
 }
 
-
+//Chiam inspired ans
 int HashFind(int key, HashSlot hashTable[])
 {
     // Write your code here
@@ -483,4 +483,98 @@ int HashFind(int key, HashSlot hashTable[])
     }
 
     return 0;
+}
+
+int HashInsert(int key, HashSlot hashTable[])
+{
+    // Write your code here
+    //4 cases, key mod prime is empty, key mod prime is filled, duplicate keys, table full lol
+    //if it loops back to OG means full
+    //if key is empty then normal close addressing; if its filled then OG key->next = new key index
+    //if duplicate key then return -1
+    int index,i=0,pre, OG;
+
+    //first check for duplicate keys
+    if(HashFind(key, hashTable) != -1)
+        return -1;
+
+    index = hash(key);
+
+    OG =index;
+
+    //now to check whether the number is first mod
+    if(hashTable[index].indicator == EMPTY)
+    {
+        hashTable[index].key = key;
+        hashTable[index].indicator = USED;
+        return index;
+    }
+    //now got 2 case, table full or not full lor
+    //if mod got thing alr then juz ++;
+    //pre = index of prev # then pre->next = index;
+    else
+    {
+        pre = index;
+
+        if(hashTable[index].next == -1)        //eg. 15 mod 7 = 1 but 7 is already in 1 or 14 n 7
+            {
+                do{
+                    i++;
+                    index = hash(key+i);
+                    if(hashTable[index].indicator == EMPTY)
+                    {
+                        hashTable[index].key = key;
+                        hashTable[index].indicator = USED;
+                        hashTable[pre].next = index;
+                        return index;
+                    }
+                }while(index != OG);
+                return TABLESIZE;
+
+            }
+        
+        else if(hashTable[index].next != -1)
+            {
+                do{
+                        pre=index;
+                        index=hashTable[index].next;
+                }while(hashTable[index].next != -1);
+                pre = index;
+                //now just need to keep adding cos -1 means theres no link to the next spot
+                do{
+                    index = hash(++index);      //let index be the mod of index+1
+                    if(hashTable[index].indicator == EMPTY)
+                    {
+                        hashTable[index].key = key;
+                        hashTable[index].indicator = USED;
+                        hashTable[pre].next = index;
+                        return index;
+                    }
+                }while(index != OG);
+                return TABLESIZE;  //looped through everything alr
+            }
+    }
+}
+
+
+int HashFind(int key, HashSlot hashTable[])
+{
+    // Write your code here
+    int index;
+
+    index = hash(key);
+
+    //if its the first key
+    if(hashTable[index].key == key)
+            return index;
+
+    while(hashTable[index].next != -1){
+        index = hashTable[index].next;
+        if(hashTable[index].key == key)
+            return index;
+        if(hashTable[index].indicator == EMPTY)
+            return -1;
+    }
+
+    return -1;
 }
