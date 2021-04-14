@@ -1,3 +1,4 @@
+//BFS
 //mark visit by making LL = NULL, however cant print graph at the end
 //tell edge by the most rigt vertex, eg 7:5->4->, vertf = 4; 5:7->3 & 4:3->1, vertf =1; etc
 //everytime dequeue == vertf then ++ as it means that the level is done
@@ -70,3 +71,93 @@ int BFS (Graph g, int v, int w){
 
 
     return -1;
+}
+
+
+//BFS all cases pass
+//now use an array to tell whether visited 
+//flag 2 is to tell whether its visited anot
+int BFS (Graph g, int v, int w){
+
+    // Write your code here
+    Queue q1;
+    q1.head = NULL;
+    q1.size = 0;
+    q1.tail = NULL;
+
+    Graph g1;
+    g1.E = 0;
+    g1.V =0;
+    g1.list = NULL;
+
+    g1 = g;
+
+    int check[g.V];        //put vertex in linked list and manual search ?
+    //make visited node = NULL so will skip when checked
+
+    int i=0,w1, vert,vertf,flag =0,j=0,k, flag2 =0;
+    ListNode *temp;
+
+
+    enqueue(&q1, v);      //enqueue 7
+    vertf = v;
+    while(!isEmptyQueue(q1))
+    {
+        w1 = getFront(q1);          //w1 = 7
+        dequeue(&q1);
+        //printf("Visited %d\n",w1);
+        if(w1 == w)
+            return i;
+        temp = g1.list[w1-1];          //node of 7
+
+
+
+        if(w1 == vertf)
+            {
+                flag = 1;
+                i++;
+                //printf("vertf == w1, w1 is %d, i is %d\n",vertf,i);
+            }
+
+        for(k=0;k<g1.V;k++)
+        {
+            if(w1 == check[k])
+            {
+                flag2 = 1;
+                break;
+            }
+        }
+
+        if(flag2 == 0)
+        {
+            while(temp)
+            {
+                vert = temp->vertex;   //7->5;5->4
+                //printf("Visited2 %d\n",vert);
+                enqueue(&q1, vert);    //enq 5 & 4
+                temp = temp->next;
+
+
+                if(flag ==1)
+                {
+                    vertf = vert;
+                    //printf("vertf is %d\n",vertf);
+                }
+
+            }
+        }
+
+        check[j] = w1;
+        flag =0;
+        flag2 =0;
+        j++;
+
+
+
+    }
+
+
+
+    return -1;
+}
+
