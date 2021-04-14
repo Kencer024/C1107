@@ -161,3 +161,34 @@ int BFS (Graph g, int v, int w){
     return -1;
 }
 
+
+
+//graph connection
+//only 2 test case passed
+//used wrong idea of a node being able to connect with every other node when i should using bfs or dfs traversal
+int CC (Graph g)
+{
+    // Write your code here
+    //loop through the whole sequence
+    int i,j;
+
+    ListNode *temp1;
+    //printf("g.V is %d\n", g.E);
+    if(g.E == 0)
+        return -1;
+
+    for(i=0;i<g.V;i++)  //this loop will loop g.list
+    {
+        temp1 = g.list[i];
+        printf("%d\n",temp1->vertex);
+        for(j=0;j<g.V-1;j++)
+        {
+
+            if(temp1->next == NULL)
+                return -1;
+            temp1 = temp1->next;
+        }
+    }
+
+    return 1;
+}
