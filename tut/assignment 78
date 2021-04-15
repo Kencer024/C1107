@@ -192,3 +192,109 @@ int CC (Graph g)
 
     return 1;
 }
+
+
+//GC 3 test case pass but 1 runtime error
+//essentially put BFS in CC function
+int CC (Graph g)
+{
+    // Write your code here
+    //loop through the whole sequence
+    int i,j,k,t=0,s;          //traversal variables
+
+    int check[g.V], ch_flag = 0;    //checking array n flag
+
+    if(g.E == 0)        //check whether the graph is just 1 point
+        return -1;
+
+    ListNode *temp1;
+
+    int n = g.V;
+
+    int flag = 0;       //acts a return for my bfs
+
+    int w,vert;         //variables
+
+    Queue q1;           //initialise queue
+    q1.head = NULL;
+    q1.size = 0;
+    q1.tail = NULL;
+
+
+    for(i=1;i<=n;i++)
+    {
+        for(j=1;j<=n;j++)
+        {
+            //
+            if(i != j)
+            {
+                enqueue(&q1, i);
+
+                //BFS traversal
+                while(!isEmptyQueue(q1))
+                {
+                    w = getFront(q1);
+                    dequeue(&q1);
+                    temp1 = g.list[w-1];
+
+                    //printf("w, j is %d, %d\n",w,j);
+
+                    if(w == j)
+                    {
+                        flag = 1;
+                        break;
+                    }
+                    //printf("A\n");
+                    //check for visitation
+                    for(k=0;k<n;k++)
+                    {
+                        if(w == check[k])
+                        {
+                            ch_flag =1;
+                            break;
+                        }
+                    }
+                    //printf("B\n");
+                    if(ch_flag == 0)        //means not visited
+                    {
+                        while(temp1)
+                        {
+                            vert = temp1->vertex;
+                            enqueue(&q1, vert);
+                            temp1 = temp1->next;
+                        }
+                        check[t] = w;
+                    }
+
+
+
+                    //printf("C\n");
+                    ch_flag = 0;
+                    t++;
+
+                }       //end while(!emptyqueue)
+
+            }
+            //printf("D\n");
+            removeAllItemsFromQueue(&q1);
+            if((flag == 0)&&(i!=j))       //means loop through everything already and got no match
+                return -1;
+            else                //match found hence must reset visitation
+            {
+                //printf("check reset \n");
+                for(s=0;s<n;s++)
+                {
+                    check[s] = 0;
+                }
+                flag = 0;
+                t = 0;
+                //printf("E\n");
+            }
+
+        }       //end of for j
+    }       //end of for i
+
+
+
+    return 1;
+}
