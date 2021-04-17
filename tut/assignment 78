@@ -424,7 +424,7 @@ void sumToC(LinkedList* ll, int C, ArrayList* al)
            //printf("j3 is %d\n",j3);
        }
 
-       while(i2<=j3)
+       while(i2<=j3)                //make sure i2 which 3, more than j3 which is 4 etc
        {
            i2++;
        }
