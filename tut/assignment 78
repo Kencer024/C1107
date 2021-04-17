@@ -385,3 +385,119 @@ void sumToC(LinkedList* ll, int C, ArrayList* al)
     printf(" %d", C);
 
 }
+
+
+
+//FINALLY GOT MY SUMTOC RIGHTTT
+//ALL PASSED
+void sumToC(LinkedList* ll, int C, ArrayList* al)
+{
+   // Write your code here
+   //1,2,3 =6, can backtrack to 1 instead of 2 as the 2 branch everything probably would not work
+   int i, i2,n =0,j,j2,j3=0;
+
+   ListNode *temp1, *temp2, *temp3, *temp4;
+
+    i=1;
+   insertNode(ll, ll->size, i);
+   temp1 = ll->head;
+   i2 = i+1;
+   //i2 is 2
+
+   //printf("i2 is %d\n",i2);
+   j2 = i2;
+   while(j2 <= C)
+   {
+
+        i2 = j2;
+       //printf("j2 is %d\n",j2);
+
+       if(i2 == C)
+       {
+           break;
+       }
+
+       if(ll->size != 0)            //make sure its not 1 2 3 4 3 5 for 18
+       {
+           temp4 = findNode(*ll,ll->size-1);
+           j3 = temp4->item;
+           //printf("j3 is %d\n",j3);
+       }
+
+       while(i2<=j3)
+       {
+           i2++;
+       }
+
+
+       while((ll->sum<C))
+       {
+           insertNode(ll, ll->size, (i2));      //inserts 2 in
+           //printf("i2 is %d ",i2);
+
+           //printf("ll size is %d\n",ll->size);
+
+           if(ll->sum == C)
+           {
+               //printf("sum found\n");
+               temp3 = findNode(*ll,ll->size-2);
+               j2 = temp3->item;                   //j = the 2 node back item
+               //printf("j2 is %d\n",j2);
+               break;
+           }
+           i2++;
+
+
+       }
+       //printf("sum is %d\n", ll->sum);
+
+        temp2 = ll->head;
+        //printf("A\n");
+        if(ll->sum == C)
+        {
+            n++;
+
+            //printf("sum is\n");
+            for(j=0;j<ll->size;j++)    //from 1 to 6
+            {
+
+                //printf("C\n");
+                printf(" %d ",temp2->item);
+                temp2 = temp2->next;
+
+            }
+            printf("\n");
+            //printf("ll size is %d\n",ll->size);
+        }/*
+
+        else
+        {
+
+            for(j=0;j<ll->size;j++)    //from 1 to 6
+            {
+
+                //printf("C\n");
+                printf(" %d ",temp2->item);
+                temp2 = temp2->next;
+
+            }
+            printf("\n");
+        }*/
+
+
+       //back track 2 slots
+       removeNode(ll,ll->size-1);
+       removeNode(ll,ll->size-1);
+       if(ll->size == 0)
+       {
+           ll->sum = 0;
+       }
+
+       j2++;
+
+
+
+   }    //endwhile
+    printf(" %d", C);
+
+}
