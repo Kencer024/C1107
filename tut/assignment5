@@ -152,6 +152,164 @@ void in2PreLL(char* infix, LinkedList *inExpLL)
 
 }
 
+//Chiam's ans wif some changes
+//CORRECT ANS
+BTNode *createBTNode(int item){
+    BTNode *newNode = malloc(sizeof(BTNode));
+    newNode->item = item;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+
+void createExpTree(BTNode** root,char* prefix){
+
+    Stack s, t;
+    s.head = NULL;
+    s.size = 0;
+    t.head = NULL;
+    t.size = 0;
+
+    int i, i1=0,i2=0,n=1,n1=0;
+
+    char *c1, *c2; //temp to iterate from end of string, numcount if it encounters an operand
+    c1 = prefix;
+    while ((*c1) != '\0'){
+        c1++;
+    }
+    c1--;
+
+    while(c1 != prefix-1){
+        if((*c1) >= 48 && (*c1) <= 57){ //if input is operand
+            c2 = c1;
+            while (*c2 >= 48 && *c2 <= 57 && c2 != prefix){
+                i2 = (*c2-48)*n;
+                i1 += i2;
+                c2--;
+                n*=10;
+                n1++;
+            }
+            //printf("i1 is %d\n",i1);
+            push(&s, createBTNode(i1));
+            push(&s, createBTNode(1));
+            c1-=n1;
+            i1 = 0;
+            n = 1;
+            n1=0;
+        }
+        else if (*c1 != 32){ //if input is operator
+            push(&s, createBTNode(*c1));
+            push(&t, peek(s));
+            push(&s, createBTNode(2));
+        }
+        c1--;
+    }
+
+    BTNode *tree;
+    pop(&s);
+    *root = peek(s);
+    //printf("root item is %d", (*root)->item);
+    pop(&s);
+
+    while(!isEmptyStack(s)){
+        tree = peek(t);
+        if (tree->left == NULL){
+            if (peek(s)->item == 1){
+                pop(&s);
+                tree->left = peek(s);
+                pop(&s);
+            }
+            else if (peek(s)->item == 2){
+                pop(&s);
+                tree->left = peek(s);
+                push(&t, peek(s));
+                pop(&s);
+            }
+        }
+        else if (tree->right == NULL){
+            if (peek(s)->item == 1){
+                pop(&s);
+                tree->right = peek(s);
+                pop(&s);
+                pop(&t);
+            }
+            else if (peek(s)->item == 2){
+                pop(&s);
+                tree->right = peek(s);
+                pop(&t);
+                push(&t, peek(s));
+                pop(&s);
+            }
+        }
+        else{
+            pop(&t);
+        }
+    }
+}
+
+void printTree(BTNode *node){
+	 /* add your code here */
+	 //In order traversal
+	 if(node == NULL)
+        return;
+
+     printTree(node->left);
+     if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
+        printf("%c ",node->item);
+     else
+        printf("%d ",node->item);
+     printTree(node->right);
+}
+
+
+void printTreePostfix(BTNode *node){
+   //Write your code here
+   //Post Order Traversal
+   if(node == NULL)
+        return;
+
+    printTreePostfix(node->left);
+    printTreePostfix(node->right);
+    if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
+        printf("%c ",node->item);
+    else
+        printf("%d ",node->item);
+
+}
+
+double computeTree(BTNode *node){
+    //Write your code here
+    //Using the concept of max depth in assignment 4 to traverse the tree
+    //if node->item is number then return the number else follow the switch case
+
+    double l, r, ans;
+
+    if(node == NULL)return node->item;
+    //printf("A\n");
+    if(node->left != NULL)
+        l = computeTree(node->left);
+    if(node->right != NULL)
+        r = computeTree(node->right);
+    //printf("%c\n",node->item);
+    if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
+    {
+        switch(node->item)
+    {
+        case '+' : return l+r;
+
+        case '-' : return l-r;
+
+        case '*' : return l*r;
+
+        case '/' : return l/r;
+    }
+    }
+    else
+        return node->item;
+
+
+}
 
 //solved but test case fail and idk why
 void createExpTree(BTNode** root,char* prefix)
@@ -825,99 +983,3 @@ void deleteTree(BTNode **root){
 
 
 
-//Chiam's ans wif some changes
-void createExpTree(BTNode** root,char* prefix){
-
-    //Following Chiam's idea of creating 2 stacks and a BTNode function to give value
-    //1stly reverse the string, put in stack, T is solely for operators
-
-    Stack s, t;
-    s.head = NULL;
-    s.size = 0;
-    t.head = NULL;
-    t.size = 0;
-
-    BTNode *insertBTNode(int item){
-        BTNode *newNode = malloc(sizeof(BTNode));
-        newNode->item = item;
-        newNode->left = NULL;
-        newNode->right = NULL;
-        return newNode;
-    }
-
-    //reversal of string
-    //firstly iterate from back then (*c)*10 + *(c-1)
-    int i, i1 = 0, n = 1, i2 = 0;
-
-    char *temp, *c;
-    temp = prefix;
-    while ((*temp) != '\0'){
-        temp += 1;
-    }
-    temp -= 1;
-
-    while(temp != prefix-1){
-         if((*temp) >47 && (*temp)<58)
-            {
-                do
-                {
-                    i2 = ((*temp)-48)*n;
-                    i1 += i2;
-                    n*= 10;
-                    i2 = i1;
-                    //printf("i1 is %d\n",i1);
-                    temp--;
-                }while((*temp) >47 && (*temp)<58);
-            push(&s, insertBTNode(i1));
-            push(&s, insertBTNode(1));
-            i1 = i2 = 0;
-            n = 1;
-        }
-        else if (*temp != 32){ //if input is operator
-            push(&s, insertBTNode(*temp));
-            push(&t, peek(s));
-            push(&s, insertBTNode(2));
-        }
-        temp -= 1;
-    }
-
-    BTNode *tree;
-    pop(&s);
-    *root = peek(s);
-    pop(&s);
-
-    while(!isEmptyStack(s)){
-        tree = peek(t);
-        if (tree->left == NULL){
-            if (peek(s)->item == 1){
-                pop(&s);
-                tree->left = peek(s);
-                pop(&s);
-            }
-            else if (peek(s)->item == 2){
-                pop(&s);
-                tree->left = peek(s);
-                push(&t, peek(s));
-                pop(&s);
-            }
-        }
-        else if (tree->right == NULL){
-            if (peek(s)->item == 1){
-                pop(&s);
-                tree->right = peek(s);
-                pop(&s);
-                pop(&t);
-            }
-            else if (peek(s)->item == 2){
-                pop(&s);
-                tree->right = peek(s);
-                pop(&t);
-                push(&t, peek(s));
-                pop(&s);
-            }
-        }
-        else{
-            pop(&t);
-        }
-    }
-}
