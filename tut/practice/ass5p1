@@ -44,3 +44,96 @@ void expressionLL(char* infix, LinkedList *inExpLL)
     }
 
 }
+
+
+void in2PreLL(char* infix, LinkedList *inExpLL)
+{
+    //Write your code here
+    //first reverse string
+    //pseudo code for in2pre
+    Stack S;
+    S.head = NULL;
+    S.size = 0;
+
+    int i1=0,i2=0,i,n=1,flag =0;
+
+    int op;
+
+    char *c;
+
+    c = infix;
+
+    while(*c != '\0')
+    {
+        c++;
+    }
+    c--;
+
+    while(c != infix-1)
+    {
+        if((*c)>47 && (*c)<58)
+        {
+            while((*c)>47 && (*c)<58)
+            {
+                i2 = ((*c)-48)*n;
+                i1 += i2;
+                n*=10;
+                if(c!=infix)
+                    c--;
+                else
+                {
+                    flag = 1;
+                    insertNode(inExpLL, i1, OPERAND);
+                    break;
+                }
+            }
+            if(flag == 1)break;
+            insertNode(inExpLL,i1,OPERAND);
+            i1 = 0;
+            n =1;
+        }
+        if(*c == '(')
+        {
+
+            while(peek(S)!= ')')
+            {
+                op = peek(S);
+                pop(&S);
+                insertNode(inExpLL,op,OPT);
+            }
+            pop(&S);    //pops ')'
+        }
+        else if(*c == ')')
+            push(&S, *c);
+
+        else
+        {
+            while(!isEmptyStack(S) && peek(S) != ')')
+            {
+                if((*c) == '+' || (*c) == '-')
+                {
+                    op = peek(S);
+                    if(op == '*' || op == '/')
+                    {
+                       insertNode(inExpLL, op, OPT);
+                       pop(&S);
+                    }
+                    else
+                        break;
+                }
+                else
+                    break;
+            }
+            push(&S, *c);
+        }
+        c--;
+
+    }
+    while(!isEmptyStack(S))
+    {
+        op = peek(S);
+        pop(&S);
+        insertNode(inExpLL, op, OPT);
+    }
+
+}
