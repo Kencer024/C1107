@@ -137,3 +137,162 @@ void in2PreLL(char* infix, LinkedList *inExpLL)
     }
 
 }
+
+
+BTNode *createNode(int item)
+{
+    BTNode *node = malloc(sizeof(BTNode));
+    node->item = item;
+    node->right = NULL;
+    node->left = NULL;
+    return node;
+}
+
+
+void createExpTree(BTNode** root,char* prefix)
+{
+    //Write your code here
+    int i1=0,i2,n=1,flag = 0;
+    char *c = prefix;
+
+    Stack s,t;
+    s.head = NULL;
+    s.size =0;
+    t.head = NULL;
+    t.size = 0;
+
+    while(*c != '\0')
+        c++;
+    c--;
+
+    while(c!= prefix-1)
+    {
+        if((*c)>47 && *c<58)
+        {
+            while(*c>47 && *c<58)
+            {
+                i2 = ((*c)-48)*n;
+                i1 += i2;
+                n*= 10;
+                c--;
+                if(c == prefix)
+                {
+                    push(&s, createNode(i1));
+                    flag = 1;
+                    break;
+                }
+            }
+            if(flag==1)break;
+            push(&s, createNode(i1));
+            push(&s, createNode(0));
+            n=1;
+            i1 =0;
+        }
+
+        else if((*c)!=32)       //operator
+        {
+            push(&s, createNode(*c));
+            push(&t,peek(s));
+            push(&s, createNode(1));
+            c--;
+        }
+        else
+            c--;
+    }
+
+    BTNode *tree;
+    pop(&s);
+    *root = peek(s);
+    pop(&s);
+    while(!isEmptyStack(s))
+    {
+        tree = peek(t);
+        if(tree->left == NULL)
+        {
+            if(peek(s)->item==0)
+            {
+                pop(&s);
+                tree->left = peek(s);
+                pop(&s);
+            }
+            else if(peek(s)->item == 1)
+            {
+                pop(&s);
+                tree->left = peek(s);
+                push(&t, peek(s));
+                pop(&s);
+            }
+        }
+        else if(tree->right == NULL)
+        {
+            if(peek(s)->item==0)
+            {
+                pop(&s);
+                tree->right = peek(s);
+                pop(&s);
+            }
+            else if(peek(s)->item == 1)
+            {
+                pop(&s);
+                tree->right = peek(s);
+                push(&t, peek(s));
+                pop(&s);
+            }
+        }
+        else
+            pop(&t);
+    }
+
+}
+
+void printTree(BTNode *node){
+    //Write your code here
+    if(node == NULL)
+        return;
+
+    printTree(node->left);
+    if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
+        printf("%c ",node->item);
+    else
+        printf("%d ",node->item);
+    printTree(node->right);
+}
+
+
+void printTreePostfix(BTNode *node){
+   //Write your code here
+   if(node == NULL)
+        return;
+
+   printTree(node->left);
+   printTree(node->right);
+   if((node->item == '+' || node->item == '-' || node->item == '*' || node->item == '/' ) && (node->left != NULL && node->right !=NULL))
+        printf("%c ",node->item);
+   else
+        printf("%d ",node->item);
+
+
+}
+
+double computeTree(BTNode *node){
+//Write your code here
+    int l,r;
+
+    if(node->left == NULL && node->right==NULL)
+        return node->item;
+    l = computeTree(node->left);
+    r = computeTree(node->right);
+
+    switch(node->item)
+    {
+        case '+' : return l+r;
+
+        case '-' : return l-r;
+
+        case '*' : return l*r;
+
+        case '/' : return l/r;
+    }
+
+
+}
