@@ -1,0 +1,46 @@
+void expressionLL(char* infix, LinkedList *inExpLL)
+{
+    //Write your code here
+    int i1=0,i2=0,n=1;
+    char *c;
+
+    c= infix;
+
+    while((*c) != '\0')
+        c++;
+    c--;
+
+    //insert to LL
+    while(c!=infix-1)
+    {
+        if((*c)>47 && (*c)<58)
+        {
+            while((*c)>47 && (*c)<58)
+            {
+                i2 = ((*c)-48)*n;
+                i1 += i2;
+                n*=10;
+
+
+                if(c == infix)
+                    insertNode(inExpLL,i1,OPERAND);
+
+                c--;
+            }
+
+        }
+        else if((*c)!= 32)
+        {
+            if(n!=1)
+            {
+                insertNode(inExpLL, i1,OPERAND);
+                n = 1;
+                i1 = 0;
+            }
+            insertNode(inExpLL, *c, OPT);
+            c--;
+        }
+
+    }
+
+}
