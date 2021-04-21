@@ -126,3 +126,109 @@ double exePostfix(char* postfix)
     return peek(s);
 
 }
+
+
+int precedence(char c)
+{
+    if(c=='*' || c == '/')
+        return 1;
+    else return 0;
+}
+
+void in2Pre(char* infix, char* prefix)
+{
+    // Write your code here
+    //remember how to reverse string
+    //key idea is that its the same as in2post but reverse at start and end
+    char *c,*c2,*ogpre;
+    int i, n=0, j=0;
+
+    //ogpre =prefix;
+
+    Stack s;
+    s.head = NULL;
+    s.size = 0;
+
+    c = infix;
+
+    ogpre = prefix;
+
+    while(*c != '\0')
+    {
+        c++;
+    }
+
+    c--;
+
+    while(c != infix-1)
+    {
+        if(isalpha(*c) || isdigit(*c))
+        {
+            *ogpre = *c;
+            n++;
+            ogpre++;
+        }
+        else if(*c == '(')
+        {
+            while(peek(s) != ')')
+            {
+                *ogpre = peek(s);
+                pop(&s);
+                n++;
+                ogpre++;
+            }
+            pop(&s);
+        }
+        else if(*c == ')')
+            push(&s, *c);
+
+        else{
+            while(!isEmptyStack(s) && peek(s) != ')')
+            {
+                if(precedence(peek(s)) >= precedence(*c))
+                {
+                    *ogpre = peek(s);
+                    pop(&s);
+                    n++;
+                    ogpre++;
+
+                }
+                else
+                    break;
+            }
+            push(&s, *c);
+        }
+        c--;
+    }
+    while(!isEmptyStack(s))
+    {
+        *ogpre = peek(s);
+        n++;
+        ogpre++;
+        pop(&s);
+    }
+    //ogpre = '\0';
+    ogpre --;
+
+    printf("%c ",*ogpre);
+
+    int count=0;
+
+    for(i=0;i<n;i++)
+    {
+
+
+        c[i] = *ogpre;
+        //printf("%c ",c[i]);
+        ogpre--;
+        count++;
+    }
+    printf("\n");
+    for(i=0;i<count;i++)
+    {
+        *prefix = c[i];
+        //printf("%c ",c[i]);
+        prefix++;
+    }
+    prefix = '\0';
+}
