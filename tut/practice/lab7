@@ -1,0 +1,66 @@
+void adjM2adjL(Graph *g)
+{
+    // Question 1
+    // Write your code here
+    //remember to write malloc
+    //g->type and g->adj.list
+    //remember to free matrix
+    
+    
+    int i,j;
+    ListNode **list;
+    ListNode *temp;
+
+    if(g->type == ADJ_LIST)
+    {
+        printf("Error");
+        return;
+    }
+    if(g->V <= 0)
+    {
+        printf("Empty");
+        return;
+    }
+
+    list = (ListNode **)malloc(g->V*sizeof(ListNode *));
+    for(i=0;i<g->V;i++)
+    {
+        list[i]=NULL;
+    }
+
+    for(i=0;i<g->V;i++)
+    {
+        for(j=0;j<g->V;j++)
+        {
+            if(g->adj.matrix[i][j]==1)
+            {
+                if(list[i]==NULL)
+                {
+                    list[i] = (ListNode*)malloc(sizeof(ListNode));
+                    list[i]->vertex = j+1;
+                    list[i]->next = NULL;
+                    temp = list[i];
+                }
+                else
+                {
+                    temp->next = (ListNode*)malloc(sizeof(ListNode));
+                    temp->next->vertex = j+1;
+                    temp->next->next = NULL;
+                    temp = temp->next;
+                }
+            }
+        }
+    }
+
+    g->type = ADJ_LIST;
+
+
+    for(i=0;i<g->V;i++)
+    {
+        free(g->adj.matrix[i]);
+    }
+    free(g->adj.matrix);
+
+    g->adj.list = list;
+}
+
