@@ -84,3 +84,75 @@ void quickSort(int A[], int low, int high)
         quickSort(A, pivot + 1, high);
     }
 }
+
+
+ListNode* HashSearch(HashTable Q3Hash, int key)
+{
+    // Write your code here
+    //hsize might not be 0 but temp might be null
+    int index;
+
+
+    ListNode *temp;
+
+    if(Q3Hash.hSize ==0 )
+    {
+        return NULL;
+    }
+
+    index = Hash(key, Q3Hash.hSize);
+    temp = Q3Hash.Table[index].head;
+
+
+    while(temp != NULL)
+    {
+        temp = temp->next;
+        if(temp->key == key)
+            return temp;
+    }
+    return NULL;
+
+}
+
+int HashInsert(HashTable* Q3HashPtr, int key)
+{
+    // Write your code here
+    int index=Hash(key, Q3HashPtr->hSize),n=0;
+    ListNode *temp,*newNode;
+
+    printf("C\n");
+
+    if(HashSearch(*Q3HashPtr, key) != NULL)
+        return 0;
+
+    newNode = (ListNode *) malloc(sizeof(ListNode));
+    newNode->key = key;
+    newNode->next = NULL;
+
+
+
+
+    if(Q3HashPtr->Table[index].head == NULL)
+    {
+        printf("A\n");
+        Q3HashPtr->Table[index].head = newNode;
+    }
+
+
+    else{
+        printf("B\n");
+        temp = Q3HashPtr->Table[index].head;
+        while(temp->next!=NULL)
+        {
+            temp = temp->next;
+            n++;
+        }
+    temp->next = newNode;
+    }
+
+
+    Q3HashPtr->Table[index].size++;
+    Q3HashPtr->nSize++;
+
+    return 1;
+}
