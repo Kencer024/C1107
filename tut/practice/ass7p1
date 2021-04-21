@@ -1,0 +1,57 @@
+int BFS (Graph g, int v, int w){
+
+    // Write your code here
+    int i,j,w1,n=0,flag=1,vertf;
+
+    ListNode *temp;
+
+    int *check;
+    check = (int *)malloc(g.V*sizeof(int));
+    for(i=0;i<=g.V;i++){
+        check[i] = 0;
+    }
+    printf("%d\n",check[11]);
+
+    Queue q;
+    q.head = NULL;
+    q.size = 0;
+
+    enqueue(&q, v);
+    while(!isEmptyQueue(q))
+    {
+        w1 = getFront(q);
+        printf("w1 is %d\n",w1);
+        if(w1 == vertf)
+        {
+            flag =1;
+            n++;
+        }
+        if(w1 == w)
+            return n;
+        dequeue(&q);
+        temp = g.list[w1-1];
+        while(temp!= NULL)
+        {
+            j = temp->vertex;
+            printf("%d ",j);
+            printf("%d ",check[j-1]);
+            if(check[j-1]==0)
+            {
+                enqueue(&q,j);
+
+            }
+            temp=temp->next;
+            if(flag == 1)
+            {
+                vertf = j;
+                flag=0;
+            }
+        }
+
+        check[w1-1] = 1;
+        printf("\n");
+    }
+
+
+    return -1;
+}
