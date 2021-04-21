@@ -1,7 +1,8 @@
 void in2Post(char* infix, char* postfix)
 {
     // Write your code here
-
+    //take note of when to postfix++
+    //precedence(peek(s))<=pre(c) remember also got equal
     char *c, c1;
 
     c = infix;
@@ -76,5 +77,52 @@ void in2Post(char* infix, char* postfix)
         postfix++;
     }
     *postfix = '\0';
+
+}
+
+
+double exePostfix(char* postfix)
+{
+	// Write your code here
+    //its op2 /op1 and op2 - op1 and nt the other way around
+	double op1,op2;
+
+	Stack s;
+	s.head = NULL;
+	s.size = 0;
+
+	while(*postfix != '\0')
+    {
+        if(*postfix == '+' || *postfix == '-' || *postfix == '*' || *postfix == '/')
+        {
+            op1 = peek(s);
+            //printf("op1 is %f\n",peek(s));
+            pop(&s);
+            op2 = peek(s);
+            //printf("op2 is %f\n",peek(s));
+            pop(&s);
+            switch(*postfix)
+            {
+                case '+' :
+                    push(&s,op1+op2);
+                    break;
+                case '-' :
+                    push(&s,op2-op1);
+                    break;
+                case '*' :
+                    push(&s,op1*op2);
+                    break;
+                case '/' :
+                    push(&s,op2/op1);
+                    break;
+            }
+        }
+        else{
+            push(&s,*postfix-48);
+            //printf("%f\n",peek(s));
+        }
+        postfix++;
+    }
+    return peek(s);
 
 }
