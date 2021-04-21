@@ -1,0 +1,21 @@
+void dualSearch(int A[], int size, int K, int dualIndex[])
+{
+   // Write your code here
+   int i,j;
+
+   for(i=0;i<size;i++)
+   {
+       for(j=0;j<size;j++)
+       {
+           if(A[j]+A[i]==K)
+           {
+               dualIndex[0]=i;
+               dualIndex[1]=j;
+               return ;
+           }
+       }
+   }
+
+
+}
+
