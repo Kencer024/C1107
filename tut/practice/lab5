@@ -1,0 +1,80 @@
+void in2Post(char* infix, char* postfix)
+{
+    // Write your code here
+
+    char *c, c1;
+
+    c = infix;
+
+    Stack s;
+    s.head = NULL;
+    s.size = 0;
+
+    while(*c != '\0')
+    {
+        if(isalpha(*c) || isdigit(*c))
+        {
+            //printf("A\n");
+            *postfix = *c;
+            postfix++;
+        }
+
+        else if(*c == ')')
+        {
+            //printf("B\n");
+            while(peek(s)!= '(')
+            {
+                c1 = peek(s);
+                pop(&s);
+                *postfix = c1;
+                postfix++;
+            }
+            pop(&s);
+        }
+        else if(*c == '(')
+        {
+            //printf("C\n");
+            push(&s, *c);
+
+        }
+
+        else{
+            while(!isEmptyStack(s) && peek(s)!='(')
+            {
+                //printf("D\n");
+                if(*c == '+' || *c == '-')
+                {
+
+                    c1 = peek(s);
+                    //printf("%c\n",c1);
+                    if(c1 == '*' || c1 == '/')
+                    {
+                        *postfix = c1;
+                        printf("pf is %c",*postfix);
+                        pop(&s);
+                        postfix++;
+                    }
+                    else
+                    {
+                        *postfix = c1;
+                        printf("pf is %c",*postfix);
+                        pop(&s);
+                        postfix++;
+                    }
+                }
+                else
+                    break;
+            }
+            push(&s, *c);
+        }
+        c++;
+    }
+    while(!isEmptyStack(s))
+    {
+        *postfix = peek(s);
+        pop(&s);
+        postfix++;
+    }
+    *postfix = '\0';
+
+}
