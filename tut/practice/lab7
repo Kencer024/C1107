@@ -64,3 +64,33 @@ void adjM2adjL(Graph *g)
     g->adj.list = list;
 }
 
+void calDegreeV(Graph g, int *degreeV)
+{
+	// Question 3
+    // Write your code here
+    int i,j;
+
+    ListNode *temp= NULL;
+
+    if(g.type == ADJ_MATRIX){
+        for(i=0;i<g.V;i++){
+            degreeV[i] = 0;
+            for(j=0;j<g.V;j++){
+                degreeV[i] += g.adj.matrix[i][j];
+
+            }
+        }
+    }
+    else{
+        for(i=0;i<g.V;i++){
+            degreeV[i] = 0;
+            temp = g.adj.list[i];
+            while(temp != NULL){
+                degreeV[i]++;
+                temp = temp->next;
+            }
+        }
+    }
+
+
+}
